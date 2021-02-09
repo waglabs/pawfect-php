@@ -1,0 +1,61 @@
+{
+  "name": "waglabs/pawfect-php",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "type": "library",
+  "version": "1.0.0-alpha",
+  "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
+  "authors": [
+    {
+      "name": "Andrew Breksa",
+      "email": "andrew.breksa@wagwalking.com"
+    },
+    {
+      "name": "Tyson Green",
+      "email": "tyson.green@wagwalking.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "league/container": "^3.3",
+    "ext-json": "*",
+    "roave/better-reflection": "^4.3",
+    "doctrine/annotations": "^1.10",
+    "symfony/console": "^4.0|^5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "WagLabs\\PawfectPHP\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WagLabs\\PawfectPHP\\Tests\\": "./tests",
+      "WagLabs\\PawfectPHP\\Examples\\": "./examples"
+    }
+  },
+  "bin": "bin/pawfect-php",
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "mockery/mockery": "^1.4",
+    "phpstan/phpstan": "^0.12.71",
+    "vimeo/psalm": "^4.4",
+    "roave/security-advisories": "dev-latest",
+    "brainmaestro/composer-git-hooks": "^2.8"
+  },
+  "scripts": {
+    "cghooks": "vendor/bin/cghooks"
+  },
+  "extra": {
+    "hooks": {
+      "pre-push": [
+        "php vendor/bin/phpstan analyse -c phpstan.neon",
+        "php vendor/bin/psalm -c psalm.xml ./src",
+        "php vendor/bin/phpunit --coverage-text"
+      ],
+      "post-merge": [
+        "cghooks update"
+      ]
+    }
+  }
+}

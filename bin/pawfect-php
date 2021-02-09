@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use Roave\BetterReflection\BetterReflection as BetterReflectionClass;
+use Symfony\Component\Console\Application;
+use WagLabs\PawfectPHP\FileLoader\FileLoader;
+use WagLabs\PawfectPHP\PawfectPHPCommand;
+use WagLabs\PawfectPHP\ReflectionClassLoader;
+use WagLabs\PawfectPHP\ReflectionClassLoaderInterface;
+use WagLabs\PawfectPHP\RuleRepository;
+use WagLabs\PawfectPHP\RuleRepositoryInterface;
+
+const PAWFECT_PHP_VERSION = '1.0.0-alpha';
+
+$autoloadLocations = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../../../vendor/autoload.php',
+    __DIR__ . '/../../../../vendor/autoload.php',
+    __DIR__ . '/../../../../../vendor/autoload.php',
+];
+
+foreach ($autoloadLocations as $autoloadLocation) {
+    if (file_exists($autoloadLocation)) {
+        require_once($autoloadLocation);
+        break;
+    }
+}
+
+$application = new Application();
+
+$application->setVersion(PAWFECT_PHP_VERSION);
+$application->setName('Wag Labs pawfect-php by Andrew Breksa, Tyson Green, and contributors');
+
+$container = new Container();
+$container->delegate(
+    new ReflectionContainer()
+);
+
+$reflectionClassLoader = new ReflectionClassLoader((new BetterReflectionClass())->astLocator());
+$ruleRepository = new RuleRepository();
+
+$container->share(ReflectionClassLoaderInterface::class, $reflectionClassLoader);
+$container->share(RuleRepositoryInterface::class, $ruleRepository);
+
+$application->add(new PawfectPHPCommand(
+    new FileLoader(),
+    $ruleRepository,
+    $reflectionClassLoader,
+    $container
+));
+
+$application->run();
