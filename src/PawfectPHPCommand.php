@@ -177,10 +177,7 @@ class PawfectPHPCommand extends Command
                         continue;
                     }
                 } catch (Exception | Throwable $throwable) {
-                    $output->writeln('<options=bold>' . $reflectionClass->getName() . '</>');
-                    $results->incrementFailures();
-                    $results->logException($reflectionClass->getName(), $rule, $throwable->getMessage());
-                    $output->writeln("<fg=red;options=bold>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
+                    $output->writeln('<fg=red>exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                     continue;
                 }
                 if (0 === $appliedRules++) {

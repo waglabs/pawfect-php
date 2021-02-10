@@ -920,10 +920,9 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failures!', $output);
-        self::assertStringContainsString('this is a description', $output);
-        self::assertStringContainsString('exception', $output);
-        self::assertEquals(1, $commandTester->getStatusCode());
+        self::assertStringContainsString('exception inspecting TestClass.php, skipping', $output);
+        self::assertStringContainsString('[OK] all rules pass', $output);
+        self::assertEquals(0, $commandTester->getStatusCode());
     }
 
     public function testExceptionLoadingClass()
