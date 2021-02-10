@@ -1,6 +1,8 @@
 pawfect-php
 -----------
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![codecov](https://codecov.io/gh/waglabs/pawfect-php/branch/main/graph/badge.svg)](https://codecov.io/gh/waglabs/pawfect-php)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/waglabs/pawfect-php/main)
 
 PawfectPHP is a simple and extensible framework (_currently in development_) for writing rules to ensure PHP code meets
 engineer-defined code and architecture standards.
