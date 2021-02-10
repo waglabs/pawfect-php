@@ -113,32 +113,46 @@ use WagLabs\PawfectPHP\Annotations\ApplyRule;
 ```php
 use WagLabs\PawfectPHP\AbstractAnnotationRule;
 use WagLabs\PawfectPHP\ReflectionClass;
+
 class SingleRule extends AbstractAnnotationRule
 {
+
   public function execute(ReflectionClass $reflectionClass)
-  {}
+  {
+  
+  }
+  
   public function getName() : string
-  {return 'single-rule';}
+  {
+      return 'single-rule';
+  }
+  
   public function getDescription() : string
-  {return 'Current accepted best practice and coding standard that applies to our codebase.';}
+  {
+      return 'Current accepted best practice and coding standard that applies to our codebase.';
+  }
+
 }
 ```
 
-or fine-tune your `->supports()` to only crawl annotated classes
+or fine-tune your `->supports()` to only inspect annotated classes
 
 ```php
 ...
 use WagLabs\PawfectPHP\Assertions\Annotation;
+
 class SingleRule extends AbstractRule
 {
+
   use Annotation;
+
   public function supports(ReflectionClass $reflectionClass): bool
   {
-    if (!$this->matchesApplyRuleAnnotation($reflectionClass, $this->getName())) {
-      return false;
-    }
+      if (!$this->matchesApplyRuleAnnotation($reflectionClass, $this->getName())) {
+          return false;
+      }
     
-    // determine rule support by crawling AST
+    // determine rule support by inspecting the ReflectionClass instance
   }
 ...
 ```
