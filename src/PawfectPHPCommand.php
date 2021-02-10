@@ -224,14 +224,14 @@ class PawfectPHPCommand extends Command
             $table->setRows($results->getFailureArray());
             $table->render();
             if ($input->getOption('dry-run')) {
-                return Command::SUCCESS;
+                return 0;
             }
 
-            return Command::FAILURE;
+            return 1;
         } else {
             $symfonyStyle->success('all rules pass');
 
-            return Command::SUCCESS;
+            return 0;
         }
     }
 }
