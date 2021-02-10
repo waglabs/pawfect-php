@@ -1,10 +1,12 @@
 pawfect-php
 -----------
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 PawfectPHP is a simple and extensible framework (_currently in development_) for writing rules to ensure PHP code meets
 engineer-defined code and architecture standards.
 
 # Install
+
 1. Add `git@github.com:waglabs/pawfect-php.git` to your
    composer [repositories](https://getcomposer.org/doc/05-repositories.md#loading-a-package-from-a-vcs-repository)
 1. Run `composer require --dev waglabs/pawfect-php`
@@ -142,11 +144,16 @@ class SingleRule extends AbstractRule
 ```
 
 ### @ApplyRule Parameters
+
 The default value of the annotation is applied to the names parameter as an array.
 e.g.: `@ApplyRule("single-rule")` `@ApplyRule({"list-rule", "another-rule"})`
+
 #### names: array\<string\>
+
 This is a list of strings to match the rule names exactly.
+
 #### regex: string
+
 Pass a valid regex expression to be applied. Will not be applied if names is not empty.
 e.g.: `@ApplyRule(regex="/^starts-with-/")` `@ApplyRule(regex="/(contains|keywords)/")`
 

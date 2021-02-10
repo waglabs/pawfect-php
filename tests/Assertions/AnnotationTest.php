@@ -1,20 +1,42 @@
 <?php
+/*
+ * This file is part of waglabs/pawfect-php.
+ *
+ * (C) 2021 Wag Labs, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 namespace WagLabs\PawfectPHP\Tests\Assertions;
 
 use Doctrine\Common\Annotations\Annotation\Attributes;
 use Doctrine\Common\Annotations\Annotation\Required;
+use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use SplFileInfo;
 use WagLabs\PawfectPHP\AbstractRule;
 use WagLabs\PawfectPHP\Annotations\ApplyRule;
 use WagLabs\PawfectPHP\Assertions\Annotation;
-use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\Examples\Source\AnnotatedClass;
 use WagLabs\PawfectPHP\Examples\Source\PlainClass;
 use WagLabs\PawfectPHP\Examples\Source\PoorlyAnnotatedClass;
 use WagLabs\PawfectPHP\ReflectionClass;
 
+/**
+ * Class AnnotationTest
+ * @package WagLabs\PawfectPHP\Tests\Assertions
+ */
 class AnnotationTest extends TestCase
 {
     /**
@@ -29,43 +51,6 @@ class AnnotationTest extends TestCase
      * @var ReflectionClass
      */
     private $plainClass;
-
-    protected function setUp(): void
-    {
-        $this->test = new class extends AbstractRule{
-            use Annotation;
-            public function supports(ReflectionClass $reflectionClass): bool
-            {
-                return true;
-            }
-
-            public function execute(ReflectionClass $reflectionClass)
-            {}
-
-            public function getName(): string
-            {
-                return 'test-rule';
-            }
-
-            public function getDescription(): string
-            {
-                return 'This is a test rule.';
-            }
-        };
-        $this->annotatedClass = new ReflectionClass(
-            new SplFileInfo('../../examples/Source/AnnotatedClass.php'),
-            BetterReflectionClass::createFromName(AnnotatedClass::class),
-            [
-                ApplyRule::class,
-                Required::class,
-            ]
-        );
-        $this->plainClass = new ReflectionClass(
-            new SplFileInfo('../../examples/Source/PlainClass.php'),
-            BetterReflectionClass::createFromName(PlainClass::class),
-            []
-        );
-    }
 
     public function testHasAnnotation()
     {
@@ -107,5 +92,44 @@ class AnnotationTest extends TestCase
                 ApplyRule::class,
             ]
         )));
+    }
+
+    protected function setUp(): void
+    {
+        $this->test = new class extends AbstractRule {
+            use Annotation;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return true;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'This is a test rule.';
+            }
+        };
+        $this->annotatedClass = new ReflectionClass(
+            new SplFileInfo('../../examples/Source/AnnotatedClass.php'),
+            BetterReflectionClass::createFromName(AnnotatedClass::class),
+            [
+                ApplyRule::class,
+                Required::class,
+            ]
+        );
+        $this->plainClass = new ReflectionClass(
+            new SplFileInfo('../../examples/Source/PlainClass.php'),
+            BetterReflectionClass::createFromName(PlainClass::class),
+            []
+        );
     }
 }

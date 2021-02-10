@@ -3,19 +3,19 @@
          backupStaticAttributes="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
          convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
-    <include>
-      <directory suffix=".php">src/</directory>
-    </include>
-    <report>
-      <clover outputFile="./coverage.xml"/>
-      <text outputFile="php://stdout" showUncoveredFiles="false"/>
-    </report>
-  </coverage>
-  <testsuites>
-    <testsuite name="Unit">
-      <directory suffix="Test.php">./tests/</directory>
-    </testsuite>
-  </testsuites>
-  <logging/>
+    <coverage>
+        <include>
+            <directory suffix=".php">src/</directory>
+        </include>
+        <report>
+            <clover outputFile="./coverage.xml"/>
+            <text outputFile="php://stdout" showUncoveredFiles="false"/>
+        </report>
+    </coverage>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <logging/>
 </phpunit>
