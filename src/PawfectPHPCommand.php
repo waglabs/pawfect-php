@@ -123,7 +123,7 @@ class PawfectPHPCommand extends Command
             try {
                 $ruleReflectionClass = $this->reflectionClassLoader->load($ruleFile);
             } catch (Exception | Throwable $exception) {
-                $output->writeln('<fg=red>exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
+                $output->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
                 continue;
             }
             if (!$ruleReflectionClass->implementsInterface(RuleInterface::class)) {
@@ -162,7 +162,7 @@ class PawfectPHPCommand extends Command
             try {
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
             } catch (Exception | Throwable $exception) {
-                $output->writeln('<fg=red>exception inspecting ' . $classFile->getPathname() . ', skipping</>');
+                $output->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                 continue;
             }
 
@@ -177,7 +177,7 @@ class PawfectPHPCommand extends Command
                         continue;
                     }
                 } catch (Exception | Throwable $throwable) {
-                    $output->writeln('<fg=red>exception inspecting ' . $classFile->getPathname() . ', skipping</>');
+                    $output->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                     continue;
                 }
                 if (0 === $appliedRules++) {
