@@ -168,11 +168,19 @@ class PawfectPHPCommand extends Command
 
             $appliedRules = 0;
             foreach ($this->ruleRegistry->getAllRules() as $name => $rule) {
-                if (!$rule->supports($reflectionClass)) {
-                    $output->writeln(
-                        'rule ' . $name . ' does not support ' . $reflectionClass->getName(),
-                        OutputInterface::VERBOSITY_DEBUG
-                    );
+                try {
+                    if (!$rule->supports($reflectionClass)) {
+                        $output->writeln(
+                            'rule ' . $name . ' does not support ' . $reflectionClass->getName(),
+                            OutputInterface::VERBOSITY_DEBUG
+                        );
+                        continue;
+                    }
+                } catch (Exception | Throwable $throwable) {
+                    $output->writeln('<options=bold>' . $reflectionClass->getName() . '</>');
+                    $results->incrementFailures();
+                    $results->logException($reflectionClass->getName(), $rule, $throwable->getMessage());
+                    $output->writeln("<fg=red;options=bold>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
                     continue;
                 }
                 if (0 === $appliedRules++) {
@@ -199,7 +207,7 @@ class PawfectPHPCommand extends Command
                 } catch (Throwable | Exception $throwable) {
                     $results->incrementFailures();
                     $results->logException($reflectionClass->getName(), $rule, $throwable->getMessage());
-                    $output->writeln("<fg=red>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
+                    $output->writeln("<fg=red;options=bold>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
                 }
             }
 
@@ -209,6 +217,7 @@ class PawfectPHPCommand extends Command
                     OutputInterface::VERBOSITY_DEBUG
                 );
             }
+
         }
 
         if ($results->getFailures() > 0) {
@@ -222,6 +231,7 @@ class PawfectPHPCommand extends Command
                 '<fg=red>Message</>',
             ]);
             $table->setRows($results->getFailureArray());
+            $table->setColumnMaxWidth(4, 50);
             $table->render();
             if ($input->getOption('dry-run')) {
                 return 0;
