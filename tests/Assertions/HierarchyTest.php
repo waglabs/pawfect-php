@@ -25,6 +25,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\AbstractRule;
 use WagLabs\PawfectPHP\Assertions\Hierarchy;
+use WagLabs\PawfectPHP\FileLoader\FileLoader;
 use WagLabs\PawfectPHP\ReflectionClass;
 use WagLabs\PawfectPHP\RuleInterface;
 
@@ -40,6 +41,42 @@ class HierarchyTest extends TestCase
     {
         Mockery::close();
         parent::tearDown();
+    }
+
+    public function testExtendsFrom()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('getParentClassNames')
+            ->andReturn([
+                FileLoader::class
+            ])
+            ->once();
+        $rule = new class extends AbstractRule {
+
+            use Hierarchy;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertFalse($rule->extendsFrom($reflectionClass, RuleInterface::class));
     }
 
     public function testImplements()

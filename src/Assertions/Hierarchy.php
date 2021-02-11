@@ -40,4 +40,14 @@ trait Hierarchy
     {
         return $reflectionClass->implementsInterface($interface);
     }
+
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param string          $parent
+     * @return bool
+     */
+    public function extendsFrom(ReflectionClass $reflectionClass, string $parent): bool
+    {
+        return in_array($parent, $reflectionClass->getParentClassNames());
+    }
 }

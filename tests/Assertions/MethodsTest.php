@@ -154,4 +154,150 @@ class MethodsTest extends TestCase
         self::assertTrue($rule->hasPublicMethod($reflectionClass, 'testMethod'));
     }
 
+    public function testHasProtectedMethod()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('hasMethod')
+            ->with('testMethod')
+            ->andReturn(true);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('isProtected')->andReturn(true);
+        $reflectionClass->shouldReceive('getMethod')
+            ->with('testMethod')
+            ->andReturn($reflectionMethod);
+        $rule = new class extends AbstractRule {
+
+            use Methods;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertTrue($rule->hasProtectedMethod($reflectionClass, 'testMethod'));
+    }
+
+    public function testHasPrivateMethod()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('hasMethod')
+            ->with('testMethod')
+            ->andReturn(true);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('isPrivate')->andReturn(true);
+        $reflectionClass->shouldReceive('getMethod')
+            ->with('testMethod')
+            ->andReturn($reflectionMethod);
+        $rule = new class extends AbstractRule {
+
+            use Methods;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertTrue($rule->hasPrivateMethod($reflectionClass, 'testMethod'));
+    }
+
+    public function testHasProtectedMethodNoMethod()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('hasMethod')
+            ->with('testMethod')
+            ->andReturn(false);
+        $rule = new class extends AbstractRule {
+
+            use Methods;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertFalse($rule->hasProtectedMethod($reflectionClass, 'testMethod'));
+    }
+
+    public function testHasPrivateMethodNoMethod()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('hasMethod')
+            ->with('testMethod')
+            ->andReturn(false);
+        $rule = new class extends AbstractRule {
+
+            use Methods;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertFalse($rule->hasPrivateMethod($reflectionClass, 'testMethod'));
+    }
+
 }

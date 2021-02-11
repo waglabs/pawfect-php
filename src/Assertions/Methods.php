@@ -37,11 +37,49 @@ trait Methods
      */
     public function hasPublicMethod(ReflectionClass $reflectionClass, string $methodName): bool
     {
-        if (!$reflectionClass->hasMethod($methodName)) {
+        if (!$this->hasMethod($reflectionClass, $methodName)) {
             return false;
         }
 
         return $reflectionClass->getMethod($methodName)->isPublic();
+    }
+
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param string          $methodName
+     * @return bool
+     */
+    public function hasProtectedMethod(ReflectionClass $reflectionClass, string $methodName): bool
+    {
+        if (!$this->hasMethod($reflectionClass, $methodName)) {
+            return false;
+        }
+
+        return $reflectionClass->getMethod($methodName)->isProtected();
+    }
+
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param string          $methodName
+     * @return bool
+     */
+    public function hasPrivateMethod(ReflectionClass $reflectionClass, string $methodName): bool
+    {
+        if (!$this->hasMethod($reflectionClass, $methodName)) {
+            return false;
+        }
+
+        return $reflectionClass->getMethod($methodName)->isPrivate();
+    }
+
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param string          $methodName
+     * @return bool
+     */
+    public function hasMethod(ReflectionClass $reflectionClass, string $methodName): bool
+    {
+        return $reflectionClass->hasMethod($methodName);
     }
 
 }
