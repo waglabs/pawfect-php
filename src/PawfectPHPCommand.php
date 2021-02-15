@@ -41,7 +41,7 @@ class PawfectPHPCommand extends Command
 {
 
     /**
-     * @var string
+     * @var string|null
      */
     protected static $defaultName = 'scan';
     /**
