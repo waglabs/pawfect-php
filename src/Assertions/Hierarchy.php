@@ -48,6 +48,10 @@ trait Hierarchy
      */
     public function extendsFrom(ReflectionClass $reflectionClass, string $parent): bool
     {
+        if ($reflectionClass->isInterface()) {
+            return in_array($parent, $reflectionClass->getInterfaceNames());
+        }
+
         return in_array($parent, $reflectionClass->getParentClassNames());
     }
 }

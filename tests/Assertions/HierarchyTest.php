@@ -46,7 +46,45 @@ class HierarchyTest extends TestCase
     public function testExtendsFrom()
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('isInterface')->andReturn(false)->once();
         $reflectionClass->shouldReceive('getParentClassNames')
+            ->andReturn([
+                FileLoader::class
+            ])
+            ->once();
+        $rule = new class extends AbstractRule {
+
+            use Hierarchy;
+
+            public function supports(ReflectionClass $reflectionClass): bool
+            {
+                return false;
+            }
+
+            public function execute(ReflectionClass $reflectionClass)
+            {
+                return;
+            }
+
+            public function getName(): string
+            {
+                return 'test-rule';
+            }
+
+            public function getDescription(): string
+            {
+                return 'test description';
+            }
+        };
+
+        self::assertFalse($rule->extendsFrom($reflectionClass, RuleInterface::class));
+    }
+
+    public function testExtendsFromInterface()
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionClass->shouldReceive('isInterface')->andReturn(true)->once();
+        $reflectionClass->shouldReceive('getInterfaceNames')
             ->andReturn([
                 FileLoader::class
             ])
