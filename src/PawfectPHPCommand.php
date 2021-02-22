@@ -228,6 +228,7 @@ class PawfectPHPCommand extends Command
                 '<fg=red>Message</>',
             ]);
             $table->setRows($results->getFailureArray());
+            $table->setColumnMaxWidth(2, 50);
             $table->setColumnMaxWidth(4, 50);
             $table->render();
             if ($input->getOption('dry-run')) {
