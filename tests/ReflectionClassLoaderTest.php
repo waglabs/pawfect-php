@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\BetterReflection;
@@ -35,7 +36,6 @@ use WagLabs\PawfectPHP\ReflectionClassLoader;
  */
 class ReflectionClassLoaderTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -44,7 +44,7 @@ class ReflectionClassLoaderTest extends TestCase
 
     public function testLoad()
     {
-        $locator = (new BetterReflection())->astLocator();
+        $locator               = (new BetterReflection())->astLocator();
         $reflectionClassLoader = new ReflectionClassLoader($locator);
 
         $splFileInfo = new SplFileInfo(__FILE__);
@@ -62,7 +62,7 @@ class ReflectionClassLoaderTest extends TestCase
 
     public function testLoadNoClasses()
     {
-        $locator = (new BetterReflection())->astLocator();
+        $locator               = (new BetterReflection())->astLocator();
         $reflectionClassLoader = new ReflectionClassLoader($locator);
 
         $splFileInfo = new SplFileInfo(__DIR__ . '/../bin/pawfect-php');
@@ -71,5 +71,4 @@ class ReflectionClassLoaderTest extends TestCase
 
         $reflectionClassLoader->load($splFileInfo);
     }
-
 }

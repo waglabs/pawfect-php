@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -27,7 +29,6 @@ namespace WagLabs\PawfectPHP;
  */
 class Results
 {
-
     /**
      * @var int
      */

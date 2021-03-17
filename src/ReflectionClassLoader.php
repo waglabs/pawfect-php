@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP;
 
-
 use Doctrine\Common\Annotations\PhpParser;
 use Exception;
 use ReflectionException;
@@ -38,7 +39,6 @@ use SplFileInfo;
  */
 class ReflectionClassLoader implements ReflectionClassLoaderInterface
 {
-
     /**
      * @var Locator
      */
@@ -70,12 +70,12 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
         $reflector = new ClassReflector(new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator));
-        $classes = $reflector->getAllClasses();
+        $classes   = $reflector->getAllClasses();
         if (count($classes) !== 1) {
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
         }
 
-        $reflectionClass = $this->loadFromFqn($classes[0]->getName());
+        $reflectionClass                                         = $this->loadFromFqn($classes[0]->getName());
         $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
         return $reflectionClass;
     }

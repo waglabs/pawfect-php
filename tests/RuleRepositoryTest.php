@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -32,7 +34,6 @@ use WagLabs\PawfectPHP\RuleRepository;
  */
 class RuleRepositoryTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -41,12 +42,11 @@ class RuleRepositoryTest extends TestCase
 
     public function testRegister()
     {
-        $rule = Mockery::mock(RuleInterface::class);
+        $rule           = Mockery::mock(RuleInterface::class);
         $ruleRepository = new RuleRepository();
         $ruleRepository->register('test-rule', $rule);
         self::assertEquals($rule, $ruleRepository->getRule('test-rule'));
         self::assertEquals(['test-rule' => $rule], $ruleRepository->getAllRules());
         self::assertEquals(1, $ruleRepository->count());
     }
-
 }

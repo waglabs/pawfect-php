@@ -96,7 +96,7 @@ class AnnotationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->test = new class extends AbstractRule {
+        $this->test = new class() extends AbstractRule {
             use Annotation;
 
             public function supports(ReflectionClass $reflectionClass): bool

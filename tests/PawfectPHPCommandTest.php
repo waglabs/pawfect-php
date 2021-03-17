@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -19,7 +21,6 @@
  */
 
 namespace WagLabs\PawfectPHP\Tests;
-
 
 use Exception;
 use Mockery;
@@ -42,7 +43,6 @@ use WagLabs\PawfectPHP\RuleRepositoryInterface;
  */
 class PawfectPHPCommandTest extends TestCase
 {
-
     public function tearDown(): void
     {
         //  Mockery::close();
@@ -51,10 +51,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoRules()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
 
@@ -86,10 +86,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoRulesWithRuleInterface()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
@@ -138,10 +138,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testExceptionLoadingRule()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
         $testRuleFile = Mockery::mock(SplFileInfo::class);
@@ -183,10 +183,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoClasses()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -252,10 +252,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoRulesForClass()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -344,10 +344,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRulePassesTrueResponse()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -441,10 +441,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRulePassesNullResponse()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -538,10 +538,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleFailsFalseResponse()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -636,10 +636,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleFailsAssertionException()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -735,10 +735,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleFailsException()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -834,10 +834,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleSupportsException()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -927,10 +927,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testExceptionLoadingClass()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -1008,10 +1008,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleFailsExceptionDryRun()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
         $testRule = Mockery::mock(RuleInterface::class);
@@ -1105,5 +1105,4 @@ class PawfectPHPCommandTest extends TestCase
         self::assertStringContainsString('exception', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
-
 }

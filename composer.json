@@ -42,17 +42,22 @@
     "phpstan/phpstan": "^0.12.71",
     "vimeo/psalm": "^4.4",
     "roave/security-advisories": "dev-latest",
-    "brainmaestro/composer-git-hooks": "^2.8"
+    "brainmaestro/composer-git-hooks": "^2.8",
+    "friendsofphp/php-cs-fixer": "^2.18"
   },
   "scripts": {
-    "cghooks": "vendor/bin/cghooks"
+    "cghooks": "vendor/bin/cghooks",
+    "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php_cs ./src ./tests ./examples ./bin",
+    "phpunit": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
+    "phpstan": "php vendor/bin/phpstan analyse -c phpstan.neon",
+    "psalm": "php vendor/bin/psalm -c psalm.xml ./src"
   },
   "extra": {
     "hooks": {
-      "pre-push": [
-        "php vendor/bin/phpstan analyse -c phpstan.neon",
-        "php vendor/bin/psalm -c psalm.xml ./src",
-        "php vendor/bin/phpunit --coverage-text"
+      "pre-commit": [
+        "composer phpstan",
+        "composer psalm",
+        "composer phpunit"
       ],
       "post-merge": [
         "cghooks update"
