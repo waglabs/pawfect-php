@@ -93,6 +93,7 @@ trait Annotation
                 if (preg_match('/annotation "@([^"]+)"/', $exception->getMessage(), $matches)) {
                     $tryAgain = true;
                     AnnotationReader::addGlobalIgnoredName($matches[1]);
+                    $this->annotationReader = new AnnotationReader();
                 }
             }
         } while ($tryAgain && $i < 10);
