@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -27,7 +29,6 @@ namespace WagLabs\PawfectPHP;
  */
 abstract class AbstractRule implements RuleInterface
 {
-
     /**
      * @param bool   $condition
      * @param string $message
@@ -42,5 +43,4 @@ abstract class AbstractRule implements RuleInterface
             );
         }
     }
-
 }

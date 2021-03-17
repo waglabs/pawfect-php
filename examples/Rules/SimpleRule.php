@@ -32,7 +32,6 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 class SimpleRule extends AbstractRule
 {
-
     use Methods;
 
     public function supports(ReflectionClass $reflectionClass): bool

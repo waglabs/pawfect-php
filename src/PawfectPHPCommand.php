@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP;
 
-use Exception;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -39,7 +40,6 @@ use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
  */
 class PawfectPHPCommand extends Command
 {
-
     /**
      * @var string|null
      */
@@ -77,10 +77,10 @@ class PawfectPHPCommand extends Command
         ContainerInterface $container
     ) {
         parent::__construct();
-        $this->fileLoader = $fileLoader;
-        $this->ruleRegistry = $ruleRegistry;
+        $this->fileLoader            = $fileLoader;
+        $this->ruleRegistry          = $ruleRegistry;
         $this->reflectionClassLoader = $reflectionClassLoader;
-        $this->container = $container;
+        $this->container             = $container;
     }
 
     protected function configure(): void
@@ -122,7 +122,7 @@ class PawfectPHPCommand extends Command
             );
             try {
                 $ruleReflectionClass = $this->reflectionClassLoader->load($ruleFile);
-            } catch (Exception | Throwable $exception) {
+            } catch (Throwable $exception) {
                 $output->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
                 continue;
             }
@@ -161,7 +161,7 @@ class PawfectPHPCommand extends Command
 
             try {
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
-            } catch (Exception | Throwable $exception) {
+            } catch (Throwable $exception) {
                 $output->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                 continue;
             }
@@ -176,7 +176,7 @@ class PawfectPHPCommand extends Command
                         );
                         continue;
                     }
-                } catch (Exception | Throwable $throwable) {
+                } catch (Throwable $throwable) {
                     $output->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                     continue;
                 }
@@ -201,7 +201,7 @@ class PawfectPHPCommand extends Command
                         $assertionException->getMessage()
                     );
                     $output->writeln("<fg=red>\tx " . $rule->getName() . ' (' . $rule->getDescription() . ')' . '</>');
-                } catch (Throwable | Exception $throwable) {
+                } catch (Throwable $throwable) {
                     $results->incrementFailures();
                     $results->logException($reflectionClass->getName(), $rule, $throwable->getMessage());
                     $output->writeln("<fg=red;options=bold>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
@@ -214,7 +214,6 @@ class PawfectPHPCommand extends Command
                     OutputInterface::VERBOSITY_DEBUG
                 );
             }
-
         }
 
         if ($results->getFailures() > 0) {
@@ -236,10 +235,9 @@ class PawfectPHPCommand extends Command
             }
 
             return 1;
-        } else {
-            $symfonyStyle->success('all rules pass');
-
-            return 0;
         }
+        $symfonyStyle->success('all rules pass');
+
+        return 0;
     }
 }

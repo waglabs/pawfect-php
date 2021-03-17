@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests\Assertions;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -35,7 +36,6 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 class MethodsTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -48,8 +48,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -59,7 +58,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -87,8 +85,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -98,7 +95,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -126,8 +122,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -137,7 +132,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -165,8 +159,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -176,7 +169,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -204,8 +196,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -215,7 +206,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -238,8 +228,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -249,7 +238,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -272,8 +260,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -283,7 +270,6 @@ class MethodsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -299,5 +285,4 @@ class MethodsTest extends TestCase
 
         self::assertFalse($rule->hasPrivateMethod($reflectionClass, 'testMethod'));
     }
-
 }

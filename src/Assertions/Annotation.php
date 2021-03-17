@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -69,7 +71,7 @@ trait Annotation
     protected function getClassAnnotations(ReflectionClass $reflectionClass, string $annotationName = null): array
     {
         $coreReflectionClass = new \ReflectionClass($reflectionClass->getName());
-        $annotations = $this->protectFromUnknownAnnotations(function () use ($coreReflectionClass) {
+        $annotations         = $this->protectFromUnknownAnnotations(function () use ($coreReflectionClass) {
             return $this->getAnnotationReader()->getClassAnnotations($coreReflectionClass);
         });
 
@@ -159,7 +161,7 @@ trait Annotation
         string $annotationName = null
     ): array {
         $coreReflectionProperty = new ReflectionProperty($reflectionClass->getName(), $propertyName);
-        $annotations = $this->protectFromUnknownAnnotations(function () use ($coreReflectionProperty) {
+        $annotations            = $this->protectFromUnknownAnnotations(function () use ($coreReflectionProperty) {
             return $this->getAnnotationReader()->getPropertyAnnotations($coreReflectionProperty);
         });
 
@@ -197,7 +199,7 @@ trait Annotation
         string $annotationName = null
     ): array {
         $coreReflectionMethod = new ReflectionMethod($reflectionClass->getName(), $methodName);
-        $annotations = $this->protectFromUnknownAnnotations(function () use ($coreReflectionMethod) {
+        $annotations          = $this->protectFromUnknownAnnotations(function () use ($coreReflectionMethod) {
             return $this->getAnnotationReader()->getMethodAnnotations($coreReflectionMethod);
         });
 

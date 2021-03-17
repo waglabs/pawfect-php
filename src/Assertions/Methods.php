@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -29,7 +31,6 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 trait Methods
 {
-
     /**
      * @param ReflectionClass $reflectionClass
      * @param string          $methodName
@@ -81,5 +82,4 @@ trait Methods
     {
         return $reflectionClass->hasMethod($methodName);
     }
-
 }

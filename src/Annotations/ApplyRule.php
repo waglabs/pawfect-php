@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -64,7 +66,7 @@ final class ApplyRule
                 return true;
             }
 
-            return !!preg_match($this->regex, $test);
+            return (bool)preg_match($this->regex, $test);
         }
 
         return in_array($test, $this->names);

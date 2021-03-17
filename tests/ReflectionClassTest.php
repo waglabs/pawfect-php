@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -19,7 +21,6 @@
  */
 
 namespace WagLabs\PawfectPHP\Tests;
-
 
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ class ReflectionClassTest extends TestCase
 
     public function test__call()
     {
-        $splFileInfo = Mockery::mock(SplFileInfo::class);
+        $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
         $betterReflectionClass->shouldReceive('getName')->andReturn(ReflectionClassTest::class)->once();
         $reflectionClass = new ReflectionClass(
@@ -55,9 +56,9 @@ class ReflectionClassTest extends TestCase
 
     public function testGetUses()
     {
-        $splFileInfo = Mockery::mock(SplFileInfo::class);
+        $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
-        $reflectionClass = new ReflectionClass(
+        $reflectionClass       = new ReflectionClass(
             $splFileInfo,
             $betterReflectionClass,
             [
@@ -70,9 +71,9 @@ class ReflectionClassTest extends TestCase
 
     public function testGetSplFileInfo()
     {
-        $splFileInfo = Mockery::mock(SplFileInfo::class);
+        $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
-        $reflectionClass = new ReflectionClass(
+        $reflectionClass       = new ReflectionClass(
             $splFileInfo,
             $betterReflectionClass
         );
@@ -82,9 +83,9 @@ class ReflectionClassTest extends TestCase
 
     public function testGetReflectionClass()
     {
-        $splFileInfo = Mockery::mock(SplFileInfo::class);
+        $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
-        $reflectionClass = new ReflectionClass(
+        $reflectionClass       = new ReflectionClass(
             $splFileInfo,
             $betterReflectionClass
         );

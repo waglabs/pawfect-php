@@ -20,7 +20,6 @@
 
 namespace WagLabs\PawfectPHP\Examples\Rules;
 
-
 use WagLabs\PawfectPHP\AbstractRule;
 use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
 use WagLabs\PawfectPHP\ReflectionClass;
@@ -35,7 +34,6 @@ use WagLabs\PawfectPHP\RuleRepositoryInterface;
  */
 class ComplexRule extends AbstractRule
 {
-
     /**
      * @var ReflectionClassLoaderInterface
      */

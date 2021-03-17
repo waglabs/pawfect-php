@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP;
 
-
 /**
  * Class RuleRepository
  * @package WagLabs\PawfectPHP
@@ -28,7 +29,6 @@ namespace WagLabs\PawfectPHP;
  */
 class RuleRepository implements RuleRepositoryInterface
 {
-
     /**
      * @var array<string, RuleInterface>
      */

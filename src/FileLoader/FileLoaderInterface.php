@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\FileLoader;
 
-
 use Generator;
 use SplFileInfo;
 
@@ -31,7 +32,6 @@ use SplFileInfo;
  */
 interface FileLoaderInterface
 {
-
     /**
      * @param array<string> $sources
      * @return Generator<SplFileInfo>|array<SplFileInfo>

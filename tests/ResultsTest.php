@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\Results;
@@ -33,7 +34,6 @@ use WagLabs\PawfectPHP\RuleInterface;
  */
 class ResultsTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -59,7 +59,7 @@ class ResultsTest extends TestCase
     public function testLogFailure()
     {
         $results = new Results();
-        $rule = Mockery::mock(RuleInterface::class);
+        $rule    = Mockery::mock(RuleInterface::class);
         $rule->shouldReceive('getName')->andReturn('test-rule')->twice();
         $rule->shouldReceive('getDescription')->andReturn('test description')->twice();
         $results->logFailure(
@@ -97,7 +97,7 @@ class ResultsTest extends TestCase
     public function testLogException()
     {
         $results = new Results();
-        $rule = Mockery::mock(RuleInterface::class);
+        $rule    = Mockery::mock(RuleInterface::class);
         $rule->shouldReceive('getName')->andReturn('test-rule')->twice();
         $rule->shouldReceive('getDescription')->andReturn('test description')->twice();
         $results->logException(
@@ -131,5 +131,4 @@ class ResultsTest extends TestCase
             $results->getFailureArray()
         );
     }
-
 }

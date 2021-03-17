@@ -28,7 +28,6 @@ use WagLabs\PawfectPHP\Examples\Source\AnnotatedClass;
 
 class ApplyRuleTest extends TestCase
 {
-
     public function test__construct()
     {
         $test = new ApplyRule([]);
@@ -85,9 +84,9 @@ class ApplyRuleTest extends TestCase
          * @ApplyRule(names={"rule-1", "rule-2"}, regex="/^won't-be-tested/")
          * @ApplyRule("override", names={"rule-1", "rule-2"}, regex="/^this-either/")
          */
-        $reader = new AnnotationReader();
+        $reader      = new AnnotationReader();
         $annotations = $reader->getClassAnnotations(new ReflectionClass(AnnotatedClass::class));
-        $annotation = array_shift($annotations);
+        $annotation  = array_shift($annotations);
         self::assertEmpty($annotation->names);
         $annotation = array_shift($annotations);
         self::assertCount(1, $annotation->names);

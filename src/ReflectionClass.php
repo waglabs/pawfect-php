@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP;
 
-
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use SplFileInfo;
 
@@ -32,7 +33,6 @@ use SplFileInfo;
  */
 class ReflectionClass
 {
-
     /**
      * @var array<string>
      */
@@ -59,9 +59,9 @@ class ReflectionClass
         BetterReflectionClass $betterReflectionClass,
         array $uses = []
     ) {
-        $this->splFileInfo = $splFileInfo;
+        $this->splFileInfo           = $splFileInfo;
         $this->betterReflectionClass = $betterReflectionClass;
-        $this->uses = $uses;
+        $this->uses                  = $uses;
     }
 
     /**

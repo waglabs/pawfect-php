@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace Assertions;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\AbstractRule;
@@ -36,7 +37,6 @@ use WagLabs\PawfectPHP\Results;
  */
 class RelationshipsTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -51,8 +51,7 @@ class RelationshipsTest extends TestCase
                 Results::class,
                 ReflectionClass::class
             ]);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Relationships;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -62,7 +61,6 @@ class RelationshipsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -87,8 +85,7 @@ class RelationshipsTest extends TestCase
                 Results::class,
                 ReflectionClass::class
             ]);
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Relationships;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -98,7 +95,6 @@ class RelationshipsTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -114,5 +110,4 @@ class RelationshipsTest extends TestCase
 
         self::assertTrue($rule->dependsOn($reflectionClass, ReflectionClass::class));
     }
-
 }

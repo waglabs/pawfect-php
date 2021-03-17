@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests\Assertions;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\AbstractRule;
@@ -36,7 +37,6 @@ use WagLabs\PawfectPHP\RuleInterface;
  */
 class HierarchyTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -52,8 +52,7 @@ class HierarchyTest extends TestCase
                 FileLoader::class
             ])
             ->once();
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -63,7 +62,6 @@ class HierarchyTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -89,8 +87,7 @@ class HierarchyTest extends TestCase
                 FileLoader::class
             ])
             ->once();
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -100,7 +97,6 @@ class HierarchyTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -124,8 +120,7 @@ class HierarchyTest extends TestCase
             ->with(RuleInterface::class)
             ->andReturn(true)
             ->once();
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -135,7 +130,6 @@ class HierarchyTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -159,8 +153,7 @@ class HierarchyTest extends TestCase
             ->with(RuleInterface::class)
             ->andReturn(false)
             ->once();
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -170,7 +163,6 @@ class HierarchyTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -186,5 +178,4 @@ class HierarchyTest extends TestCase
 
         self::assertFalse($rule->implements($reflectionClass, RuleInterface::class));
     }
-
 }

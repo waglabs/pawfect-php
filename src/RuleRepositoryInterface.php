@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -48,5 +50,4 @@ interface RuleRepositoryInterface
      * @return int
      */
     public function count(): int;
-
 }

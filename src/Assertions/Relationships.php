@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Assertions;
 
-
 use WagLabs\PawfectPHP\ReflectionClass;
 
 /**
@@ -30,7 +31,6 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 trait Relationships
 {
-
     /**
      * @param ReflectionClass $reflectionClass
      * @param string          $class
@@ -40,5 +40,4 @@ trait Relationships
     {
         return in_array($class, $reflectionClass->getUses());
     }
-
 }

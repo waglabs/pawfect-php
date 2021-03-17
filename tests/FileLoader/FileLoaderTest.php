@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests\FileLoader;
 
-
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
@@ -33,7 +34,6 @@ use WagLabs\PawfectPHP\FileLoader\FileLoader;
  */
 class FileLoaderTest extends TestCase
 {
-
     public function tearDown(): void
     {
         Mockery::close();
@@ -50,14 +50,14 @@ class FileLoaderTest extends TestCase
     public function testYieldFiles()
     {
         $fileLoader = new FileLoader();
-        $sources = [
+        $sources    = [
             __FILE__,
             __DIR__ . '/../../src/FileLoader',
             __DIR__ . '/../../thisDoesNotExist'
         ];
 
         $collected = [];
-        $expected = [
+        $expected  = [
             __FILE__,
             realpath(__DIR__ . '/../../src/FileLoader/FileLoader.php'),
             realpath(__DIR__ . '/../../src/FileLoader/FileLoaderInterface.php')
@@ -72,5 +72,4 @@ class FileLoaderTest extends TestCase
             self::assertContains($item->getPathName(), $expected);
         }
     }
-
 }

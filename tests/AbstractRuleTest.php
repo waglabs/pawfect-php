@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -20,7 +22,6 @@
 
 namespace WagLabs\PawfectPHP\Tests;
 
-
 use PHPUnit\Framework\TestCase;
 use WagLabs\PawfectPHP\AbstractRule;
 use WagLabs\PawfectPHP\ReflectionClass;
@@ -32,11 +33,9 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 class AbstractRuleTest extends TestCase
 {
-
     public function testAssert()
     {
-        $class = new class extends AbstractRule {
-
+        $class = new class() extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool
             {
                 return false;
@@ -44,7 +43,6 @@ class AbstractRuleTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -64,8 +62,7 @@ class AbstractRuleTest extends TestCase
 
     public function testAssertPasses()
     {
-        $rule = new class extends AbstractRule {
-
+        $rule = new class() extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool
             {
                 return false;
@@ -73,7 +70,6 @@ class AbstractRuleTest extends TestCase
 
             public function execute(ReflectionClass $reflectionClass)
             {
-                return;
             }
 
             public function getName(): string
@@ -90,5 +86,4 @@ class AbstractRuleTest extends TestCase
         $rule->assert(true, 'Test Message');
         self::assertTrue(true);
     }
-
 }
