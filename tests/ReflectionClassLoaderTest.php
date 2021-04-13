@@ -60,6 +60,24 @@ class ReflectionClassLoaderTest extends TestCase
         self::assertContains('PHPUnit\Framework\TestCase', $reflectionClass->getUses());
     }
 
+    public function testLoadNoCache()
+    {
+        $locator               = (new BetterReflection())->astLocator();
+        $reflectionClassLoader = new ReflectionClassLoader($locator);
+
+        $splFileInfo = new SplFileInfo(__FILE__);
+
+        $reflectionClass = $reflectionClassLoader->load($splFileInfo);
+
+        self::assertInstanceOf(ReflectionClass::class, $reflectionClass);
+
+        $reflectionClass = $reflectionClassLoader->load($splFileInfo, false);
+
+        self::assertInstanceOf(ReflectionClass::class, $reflectionClass);
+
+        self::assertContains('PHPUnit\Framework\TestCase', $reflectionClass->getUses());
+    }
+
     public function testLoadNoClasses()
     {
         $locator               = (new BetterReflection())->astLocator();

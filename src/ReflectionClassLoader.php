@@ -61,10 +61,11 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
 
     /**
      * @param SplFileInfo $splFileInfo
+     * @param bool $cache
      * @return ReflectionClass
      * @throws ReflectionException
      */
-    public function load(SplFileInfo $splFileInfo): ReflectionClass
+    public function load(SplFileInfo $splFileInfo, bool $cache = true): ReflectionClass
     {
         if (array_key_exists(sha1($splFileInfo->getPathname()), $this->fileClassCache)) {
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
@@ -76,7 +77,9 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
         }
 
         $reflectionClass                                         = $this->loadFromFqn($classes[0]->getName());
-        $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
+        if ($cache) {
+            $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
+        }
         return $reflectionClass;
     }
 
