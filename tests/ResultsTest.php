@@ -40,6 +40,15 @@ class ResultsTest extends TestCase
         parent::tearDown();
     }
 
+    public function testSetRegisteredRules()
+    {
+        $results = new Results();
+        self::assertEquals(0, $results->getRegisteredRules());
+        $results->setRegisteredRules(1);
+        self::assertEquals(1, $results->getRegisteredRules());
+    }
+
+
     public function testIncrementFailures()
     {
         $results = new Results();
@@ -56,12 +65,36 @@ class ResultsTest extends TestCase
         self::assertEquals(1, $results->getPasses());
     }
 
+    public function testIncrementErrors()
+    {
+        $results = new Results();
+        self::assertEquals(0, $results->getErrors());
+        $results->incrementErrors();
+        self::assertEquals(1, $results->getErrors());
+    }
+
+    public function testIncrementScannedClasses()
+    {
+        $results = new Results();
+        self::assertEquals(0, $results->getScannedClasses());
+        $results->incrementScannedClasses();
+        self::assertEquals(1, $results->getScannedClasses());
+    }
+
+    public function testIncrementInspectedFiles()
+    {
+        $results = new Results();
+        self::assertEquals(0, $results->getInspectedFiles());
+        $results->incrementInspectedFiles();
+        self::assertEquals(1, $results->getInspectedFiles());
+    }
+
     public function testLogFailure()
     {
         $results = new Results();
         $rule    = Mockery::mock(RuleInterface::class);
-        $rule->shouldReceive('getName')->andReturn('test-rule')->twice();
-        $rule->shouldReceive('getDescription')->andReturn('test description')->twice();
+        $rule->expects('getName')->andReturns('test-rule')->twice();
+        $rule->expects('getDescription')->andReturns('test description')->twice();
         $results->logFailure(
             'TestClass1',
             $rule,
@@ -79,14 +112,12 @@ class ResultsTest extends TestCase
                     'TestClass1',
                     'test-rule',
                     'test description',
-                    'failure',
                     'This is a message'
                 ],
                 [
                     'TestClass2',
                     'test-rule',
                     'test description',
-                    'failure',
                     'This is a message'
                 ]
             ],
@@ -98,8 +129,8 @@ class ResultsTest extends TestCase
     {
         $results = new Results();
         $rule    = Mockery::mock(RuleInterface::class);
-        $rule->shouldReceive('getName')->andReturn('test-rule')->twice();
-        $rule->shouldReceive('getDescription')->andReturn('test description')->twice();
+        $rule->expects('getName')->andReturns('test-rule')->twice();
+        $rule->expects('getDescription')->andReturns('test description')->twice();
         $results->logException(
             'TestClass1',
             $rule,
@@ -117,18 +148,16 @@ class ResultsTest extends TestCase
                     'TestClass1',
                     'test-rule',
                     'test description',
-                    'exception',
                     'This is a message'
                 ],
                 [
                     'TestClass2',
                     'test-rule',
                     'test description',
-                    'exception',
                     'This is a message'
                 ]
             ],
-            $results->getFailureArray()
+            $results->getErrorArray()
         );
     }
 }

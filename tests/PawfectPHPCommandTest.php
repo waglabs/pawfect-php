@@ -56,12 +56,9 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
+        $ruleRegistry->expects('count')->andReturns(0);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -91,29 +88,18 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
+        $ruleRegistry->expects('count')->andReturns(0);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(false)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule')
-            ->once();
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(false);
+        $testRuleReflectionClass->expects('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -143,21 +129,15 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(0)->once();
+        $ruleRegistry->expects('count')->andReturns(0);
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andThrow(Exception::class)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andThrow(Exception::class);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -188,46 +168,29 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule')
-            ->once();
+        $testRule->expects('getName')->andReturns('test-rule');
+        $ruleRegistry->expects('getAllRules')->andReturn([
+            'test-rule' => $testRule
+        ]);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -257,69 +220,39 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule')
-            ->once();
+        $testRule->expects('getName')->andReturns('test-rule');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnFalse()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnFalse();
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -349,74 +282,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andReturn(true)
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andReturns(true);
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -446,74 +347,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andReturn(null)
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andReturns(null);
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -543,74 +412,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andReturn(false)
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andReturns(false);
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -629,7 +466,7 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failures!', $output);
+        self::assertStringContainsString('1 failure', $output);
         self::assertStringContainsString('this is a description', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
@@ -641,74 +478,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andThrow(new FailedAssertionException())
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new FailedAssertionException());
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -727,7 +532,7 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failures!', $output);
+        self::assertStringContainsString('1 failure', $output);
         self::assertStringContainsString('this is a description', $output);
         self::assertStringNotContainsString('exception', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
@@ -740,74 +545,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andThrow(new Exception())
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception());
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -826,9 +599,8 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failures!', $output);
+        self::assertStringContainsString('1 error', $output);
         self::assertStringContainsString('this is a description', $output);
-        self::assertStringContainsString('exception', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
@@ -839,69 +611,40 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->andThrow(new Exception())
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->andThrow(new Exception());
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -932,57 +675,37 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
+        $ruleRegistry->expects('getAllRules')->andReturns([
+            'test-rule' => $testRule
+        ]);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andThrow(Exception::class)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andThrow(Exception::class);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -1013,74 +736,42 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
         $container             = Mockery::mock(ContainerInterface::class);
 
-        $ruleRegistry->shouldReceive('count')->andReturn(1)->once();
+        $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->shouldReceive('getName')
-            ->andReturn('test-rule');
-        $testRule->shouldReceive('getDescription')
-            ->andReturn('this is a description');
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->shouldReceive('implementsInterface')
-            ->with(RuleInterface::class)
-            ->andReturn(true)
-            ->once();
-        $testRuleReflectionClass->shouldReceive('getName')
-            ->andReturn('TestRule');
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
-        $testRuleFile->shouldReceive('getPathname')->andReturn('TestRule.php');
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
 
         $testClassFile = Mockery::mock(SplFileInfo::class);
-        $testClassFile->shouldReceive('getPathname')->andReturn('TestClass.php');
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
 
         $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testClassReflectionClass->shouldReceive('getSplFileInfo')
-            ->andReturn($testClassFile);
-        $testClassReflectionClass->shouldReceive('getName')
-            ->andReturn('TestClass');
-        $testRule->shouldReceive('supports')
-            ->with($testClassReflectionClass)
-            ->andReturnTrue()
-            ->once();
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->shouldReceive('execute')->with($testClassReflectionClass)
-            ->andThrow(new Exception())
-            ->once();
+        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception());
 
-        $ruleRegistry->shouldReceive('register')
-            ->with('test-rule', $testRule)
-            ->once();
-        $ruleRegistry->shouldReceive('getAllRules')
-            ->andReturn(['test-rule' => $testRule])
-            ->once();
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
 
-        $container->shouldReceive('get')
-            ->with('TestRule')
-            ->andReturn($testRule)
-            ->once();
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testRuleFile)
-            ->andReturn($testRuleReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
-        $reflectionClassLoader->shouldReceive('load')
-            ->with($testClassFile)
-            ->andReturn($testClassReflectionClass)
-            ->once();
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../examples/'])
-            ->andReturn([
-                $testRuleFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile
+        ]);
 
-        $fileLoader->shouldReceive('yieldFiles')
-            ->with([__DIR__ . '/../src'])
-            ->andReturn([
-                $testClassFile
-            ])
-            ->once();
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile
+        ]);
 
         $command = new PawfectPHPCommand(
             $fileLoader,
@@ -1100,9 +791,8 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failures!', $output);
+        self::assertStringContainsString('1 error', $output);
         self::assertStringContainsString('this is a description', $output);
-        self::assertStringContainsString('exception', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 }
