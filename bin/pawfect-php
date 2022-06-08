@@ -20,6 +20,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Roave\BetterReflection\BetterReflection as BetterReflectionClass;
@@ -34,11 +35,11 @@ use WagLabs\PawfectPHP\RuleRepositoryInterface;
 const PAWFECT_PHP_VERSION = '1.0.0-alpha';
 
 $autoloadLocations = [
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../vendor/autoload.php',
-    __DIR__ . '/../../../vendor/autoload.php',
-    __DIR__ . '/../../../../vendor/autoload.php',
-    __DIR__ . '/../../../../../vendor/autoload.php',
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../vendor/autoload.php',
+        __DIR__ . '/../../../vendor/autoload.php',
+        __DIR__ . '/../../../../vendor/autoload.php',
+        __DIR__ . '/../../../../../vendor/autoload.php',
 ];
 
 foreach ($autoloadLocations as $autoloadLocation) {
@@ -55,7 +56,7 @@ $application->setName('Wag Labs pawfect-php by Andrew Breksa, Tyson Green, and c
 
 $container = new Container();
 $container->delegate(
-    new ReflectionContainer()
+        new ReflectionContainer()
 );
 
 $reflectionClassLoader = new ReflectionClassLoader((new BetterReflectionClass())->astLocator());
@@ -65,10 +66,21 @@ $container->share(ReflectionClassLoaderInterface::class, $reflectionClassLoader)
 $container->share(RuleRepositoryInterface::class, $ruleRepository);
 
 $application->add(new PawfectPHPCommand(
-    new FileLoader(),
-    $ruleRepository,
-    $reflectionClassLoader,
-    $container
+        new FileLoader(),
+        $ruleRepository,
+        $reflectionClassLoader,
+        $container
 ));
+
+AnnotationRegistry::registerLoader(function ($className) use ($reflectionClassLoader) {
+    try {
+        $reflectionClassLoader->loadFromFqn('\\' . ltrim($className, '\\'));
+
+        return true;
+    }
+    catch (\Throwable $throwable) {
+        return false;
+    }
+});
 
 $application->run();
