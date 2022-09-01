@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": ">=8.0 <8.2",
     "league/container": "^3.3",
     "ext-json": "*",
     "roave/better-reflection": "^5.0",
