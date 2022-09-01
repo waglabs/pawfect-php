@@ -88,12 +88,13 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
      * @param SplFileInfo|null $splFileInfo
      * @return ReflectionClass
      * @throws ReflectionException
+     * @psalm-suppress DeprecatedMethod
      */
     public function loadFromFqn(string $fqn, ?SplFileInfo $splFileInfo = null): ReflectionClass
     {
         $betterReflectionClass = BetterReflectionClass::createFromName($fqn);
 
-        $usesNames = array_values(
+        $usesNames       = array_values(
             (new PhpParser())->parseClass(new ReflectionClassAdapter($betterReflectionClass))
         );
         $reflectionClass = new ReflectionClass(

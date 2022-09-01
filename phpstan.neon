@@ -2,8 +2,3 @@ parameters:
 	level: 8
 	paths:
 		- src
-	ignoreErrors:
-	    - message: '#Cannot cast array\<string\>\|string\|null to string\.#'
-	      path: ./src/PawfectPHPCommand.php
-	    - message: '#Parameter \#1 \$sources of method WagLabs\\PawfectPHP\\FileLoader\\FileLoaderInterface::yieldFiles\(\).+#'
-	      path: ./src/PawfectPHPCommand.php
