@@ -3,7 +3,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "type": "library",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "AGPL-3.0-or-later",
   "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
   "authors": [
@@ -17,10 +17,10 @@
     }
   ],
   "require": {
-    "php": "7.4.*",
+    "php": "^8.0",
     "league/container": "^3.3",
     "ext-json": "*",
-    "roave/better-reflection": "^4.3",
+    "roave/better-reflection": "^5.0",
     "doctrine/annotations": "^1.10",
     "symfony/console": "^4.0|^5.0"
   },
@@ -43,11 +43,11 @@
     "vimeo/psalm": "^4.4",
     "roave/security-advisories": "dev-latest",
     "brainmaestro/composer-git-hooks": "^2.8",
-    "friendsofphp/php-cs-fixer": "^2.18"
+    "friendsofphp/php-cs-fixer": "3.8"
   },
   "scripts": {
     "cghooks": "vendor/bin/cghooks",
-    "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php_cs ./src ./tests ./examples ./bin",
+    "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin",
     "phpunit": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
     "phpstan": "php vendor/bin/phpstan analyse -c phpstan.neon",
     "psalm": "php vendor/bin/psalm -c psalm.xml ./src"

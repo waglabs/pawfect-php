@@ -49,10 +49,10 @@ class HierarchyTest extends TestCase
         $reflectionClass->shouldReceive('isInterface')->andReturn(false)->once();
         $reflectionClass->shouldReceive('getParentClassNames')
             ->andReturn([
-                FileLoader::class
+                FileLoader::class,
             ])
             ->once();
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -84,10 +84,10 @@ class HierarchyTest extends TestCase
         $reflectionClass->shouldReceive('isInterface')->andReturn(true)->once();
         $reflectionClass->shouldReceive('getInterfaceNames')
             ->andReturn([
-                FileLoader::class
+                FileLoader::class,
             ])
             ->once();
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -120,7 +120,7 @@ class HierarchyTest extends TestCase
             ->with(RuleInterface::class)
             ->andReturn(true)
             ->once();
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -153,7 +153,7 @@ class HierarchyTest extends TestCase
             ->with(RuleInterface::class)
             ->andReturn(false)
             ->once();
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Hierarchy;
 
             public function supports(ReflectionClass $reflectionClass): bool

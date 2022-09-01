@@ -43,7 +43,7 @@ class ApplyRuleTest extends TestCase
                 'this-is-overridden-by-primary-value',
                 'THis can technically be any string',
             ],
-            'regex' => '/.*/'
+            'regex' => '/.*/',
         ]);
         self::assertIsArray($test->names);
         self::assertTrue(in_array('test-override', $test->names));

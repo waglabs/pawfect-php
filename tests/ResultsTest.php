@@ -112,14 +112,14 @@ class ResultsTest extends TestCase
                     'TestClass1',
                     'test-rule',
                     'test description',
-                    'This is a message'
+                    'This is a message',
                 ],
                 [
                     'TestClass2',
                     'test-rule',
                     'test description',
-                    'This is a message'
-                ]
+                    'This is a message',
+                ],
             ],
             $results->getFailureArray()
         );
@@ -148,14 +148,14 @@ class ResultsTest extends TestCase
                     'TestClass1',
                     'test-rule',
                     'test description',
-                    'This is a message'
+                    'This is a message',
                 ],
                 [
                     'TestClass2',
                     'test-rule',
                     'test description',
-                    'This is a message'
-                ]
+                    'This is a message',
+                ],
             ],
             $results->getErrorArray()
         );

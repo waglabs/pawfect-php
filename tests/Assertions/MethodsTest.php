@@ -48,7 +48,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -85,7 +85,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -122,7 +122,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -159,7 +159,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -196,7 +196,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('getMethod')
             ->with('testMethod')
             ->andReturn($reflectionMethod);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -228,7 +228,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -260,7 +260,7 @@ class MethodsTest extends TestCase
         $reflectionClass->shouldReceive('hasMethod')
             ->with('testMethod')
             ->andReturn(false);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Methods;
 
             public function supports(ReflectionClass $reflectionClass): bool

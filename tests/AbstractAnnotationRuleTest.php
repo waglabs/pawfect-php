@@ -60,7 +60,7 @@ class AbstractAnnotationRuleTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->test = new class() extends AbstractAnnotationRule {
+        $this->test = new class () extends AbstractAnnotationRule {
             public function execute(ReflectionClass $reflectionClass)
             {
             }

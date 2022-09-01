@@ -53,14 +53,14 @@ class FileLoaderTest extends TestCase
         $sources    = [
             __FILE__,
             __DIR__ . '/../../src/FileLoader',
-            __DIR__ . '/../../thisDoesNotExist'
+            __DIR__ . '/../../thisDoesNotExist',
         ];
 
         $collected = [];
         $expected  = [
             __FILE__,
             realpath(__DIR__ . '/../../src/FileLoader/FileLoader.php'),
-            realpath(__DIR__ . '/../../src/FileLoader/FileLoaderInterface.php')
+            realpath(__DIR__ . '/../../src/FileLoader/FileLoaderInterface.php'),
         ];
 
         foreach ($fileLoader->yieldFiles($sources) as $file) {

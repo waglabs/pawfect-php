@@ -120,7 +120,7 @@ class Results
             $className,
             $rule->getName(),
             $rule->getDescription(),
-            $message
+            $message,
         ];
     }
 
@@ -135,7 +135,7 @@ class Results
             $className,
             $rule->getName(),
             $rule->getDescription(),
-            $message
+            $message,
         ];
     }
 

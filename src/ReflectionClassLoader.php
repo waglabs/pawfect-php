@@ -27,7 +27,7 @@ use Exception;
 use ReflectionException;
 use Roave\BetterReflection\Reflection\Adapter\ReflectionClass as ReflectionClassAdapter;
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
-use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use SplFileInfo;
@@ -70,13 +70,16 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
         if (array_key_exists(sha1($splFileInfo->getPathname()), $this->fileClassCache)) {
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
-        $reflector = new ClassReflector(new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator));
-        $classes   = $reflector->getAllClasses();
+        $reflector = new DefaultReflector(new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator));
+
+        /** @var array<BetterReflectionClass> $reflectedClasses */
+        $reflectedClasses = $reflector->reflectAllClasses();
+        $classes          = $reflectedClasses;
         if (count($classes) !== 1) {
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
         }
 
-        $reflectionClass                                         = $this->loadFromFqn($classes[0]->getName());
+        $reflectionClass = $this->loadFromFqn($classes[0]->getName());
         if ($cache) {
             $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
         }

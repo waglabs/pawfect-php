@@ -35,7 +35,7 @@ class AbstractRuleTest extends TestCase
 {
     public function testAssert()
     {
-        $class = new class() extends AbstractRule {
+        $class = new class () extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool
             {
                 return false;
@@ -62,7 +62,7 @@ class AbstractRuleTest extends TestCase
 
     public function testAssertPasses()
     {
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool
             {
                 return false;

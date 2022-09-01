@@ -70,7 +70,9 @@ trait Annotation
      */
     protected function getClassAnnotations(ReflectionClass $reflectionClass, string $annotationName = null): array
     {
-        $coreReflectionClass = new \ReflectionClass($reflectionClass->getName());
+        /** @var class-string $className */
+        $className           = $reflectionClass->getName();
+        $coreReflectionClass = new \ReflectionClass($className);
         $annotations         = $this->protectFromUnknownAnnotations(function () use ($coreReflectionClass) {
             return $this->getAnnotationReader()->getClassAnnotations($coreReflectionClass);
         });

@@ -49,9 +49,9 @@ class RelationshipsTest extends TestCase
         $reflectionClass->shouldReceive('getUses')
             ->andReturn([
                 Results::class,
-                ReflectionClass::class
+                ReflectionClass::class,
             ]);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Relationships;
 
             public function supports(ReflectionClass $reflectionClass): bool
@@ -83,9 +83,9 @@ class RelationshipsTest extends TestCase
         $reflectionClass->shouldReceive('getUses')
             ->andReturn([
                 Results::class,
-                ReflectionClass::class
+                ReflectionClass::class,
             ]);
-        $rule = new class() extends AbstractRule {
+        $rule = new class () extends AbstractRule {
             use Relationships;
 
             public function supports(ReflectionClass $reflectionClass): bool

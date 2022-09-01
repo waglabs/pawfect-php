@@ -72,7 +72,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => __DIR__ . '/../src'
+                'paths' => __DIR__ . '/../src',
             ]
         );
 
@@ -98,7 +98,7 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -113,7 +113,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => __DIR__ . '/../src'
+                'paths' => __DIR__ . '/../src',
             ]
         );
 
@@ -136,7 +136,7 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testRuleFile)->andThrow(Exception::class);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -151,7 +151,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => __DIR__ . '/../src'
+                'paths' => __DIR__ . '/../src',
             ]
         );
 
@@ -172,7 +172,7 @@ class PawfectPHPCommandTest extends TestCase
         $testRule = Mockery::mock(RuleInterface::class);
         $testRule->expects('getName')->andReturns('test-rule');
         $ruleRegistry->expects('getAllRules')->andReturn([
-            'test-rule' => $testRule
+            'test-rule' => $testRule,
         ]);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
         $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
@@ -187,7 +187,7 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([]);
@@ -204,7 +204,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -247,11 +247,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -266,7 +266,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -312,11 +312,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -331,7 +331,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -377,11 +377,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -396,7 +396,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -442,11 +442,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -461,7 +461,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -508,11 +508,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -527,7 +527,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -575,11 +575,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -594,7 +594,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -639,11 +639,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -658,7 +658,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -680,7 +680,7 @@ class PawfectPHPCommandTest extends TestCase
         $testRule->allows('getName')->andReturns('test-rule');
         $testRule->allows('getDescription')->andReturns('this is a description');
         $ruleRegistry->expects('getAllRules')->andReturns([
-            'test-rule' => $testRule
+            'test-rule' => $testRule,
         ]);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
         $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
@@ -700,11 +700,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andThrow(Exception::class);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -719,7 +719,7 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester->execute(
             [
                 'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src']
+                'paths' => [__DIR__ . '/../src'],
             ]
         );
 
@@ -766,11 +766,11 @@ class PawfectPHPCommandTest extends TestCase
         $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
-            $testRuleFile
+            $testRuleFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
-            $testClassFile
+            $testClassFile,
         ]);
 
         $command = new PawfectPHPCommand(
@@ -786,7 +786,7 @@ class PawfectPHPCommandTest extends TestCase
             [
                 'rules'     => __DIR__ . '/../examples/',
                 'paths'     => [__DIR__ . '/../src'],
-                '--dry-run' => true
+                '--dry-run' => true,
             ]
         );
 

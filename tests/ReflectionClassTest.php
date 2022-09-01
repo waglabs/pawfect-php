@@ -62,7 +62,7 @@ class ReflectionClassTest extends TestCase
             $splFileInfo,
             $betterReflectionClass,
             [
-                ReflectionClass::class
+                ReflectionClass::class,
             ]
         );
 
