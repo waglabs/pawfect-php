@@ -3,7 +3,7 @@
   "minimum-stability" : "dev",
   "prefer-stable" : true,
   "type" : "library",
-  "version" : "3.0.0",
+  "version" : "3.0.1",
   "license" : "AGPL-3.0-or-later",
   "description" : "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
   "authors" : [

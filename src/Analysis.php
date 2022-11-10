@@ -133,7 +133,7 @@ class Analysis
             $line,
         ];
         $this->symfonyStyle->writeln(
-            '<fg=bright-yellow>[?] warning while running rule ' . $ruleClass . ': ' . $message
+            '<fg=yellow>[?] warning while running rule ' . $ruleClass . ': ' . $message
             . ($line !== null ? ' (line ' . $line . ')' : '')
         );
         $this->warnCount++;

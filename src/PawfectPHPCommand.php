@@ -188,7 +188,11 @@ class PawfectPHPCommand extends Command
                 try {
                     $appliedRuleNames[] = $name;
                     if ($rule instanceof AnalysisAwareRule) {
+                        $count = $analysis->getFailCount() + $analysis->getExceptionCount();
                         $rule->execute($reflectionClass, $analysis);
+                        if ($count === ($analysis->getFailCount() + $analysis->getExceptionCount())) {
+                            $analysis->pass($reflectionClass, $rule);
+                        }
                     } else {
                         $result = $rule->execute($reflectionClass);
                         if ($result === true || $result === null) {
@@ -227,13 +231,13 @@ class PawfectPHPCommand extends Command
 
         if ($analysis->getFailCount() > 0) {
             $symfonyStyle->newLine();
-            $symfonyStyle->writeln('<fg=bright-red;options=bold>Observed ' . $analysis->getFailCount() . ' failure(s):</>');
+            $symfonyStyle->writeln('<fg=red;options=bold>Observed ' . $analysis->getFailCount() . ' failure(s):</>');
             foreach ($analysis->getFailures() as $class => $ruleFailures) {
-                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                $symfonyStyle->writeln('- ' . $class . ':');
                 foreach ($ruleFailures as $rule => $failures) {
-                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    $symfonyStyle->writeln("\t" . '- ' . $rule . ':');
                     foreach ($failures as $failure) {
-                        $symfonyStyle->writeln("\t\t" . '<fg=bright-red>- ' . $failure[0]
+                        $symfonyStyle->writeln("\t\t" . '<fg=red>- ' . $failure[0]
                             . ($failure[1] !== null ? ' (line ' . $failure[1] . ')' : '')
                             . '</>');
                     }
@@ -245,9 +249,9 @@ class PawfectPHPCommand extends Command
             $symfonyStyle->newLine();
             $symfonyStyle->writeln('<fg=red;options=bold>Observed ' . $analysis->getFailCount() . ' exception(s):</>');
             foreach ($analysis->getExceptions() as $class => $ruleExceptions) {
-                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                $symfonyStyle->writeln('- ' . $class . ':');
                 foreach ($ruleExceptions as $rule => $exceptions) {
-                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    $symfonyStyle->writeln("\t" . '- ' . $rule . ':');
                     foreach ($exceptions as $exception) {
                         $symfonyStyle->writeln("\t\t" . '<fg=red>- ' . $exception->getMessage()
                             . ' (' . $exception->getFile() . ':' . $exception->getLine() . ')'
@@ -259,13 +263,13 @@ class PawfectPHPCommand extends Command
 
         if ($analysis->getWarnCount() > 0) {
             $symfonyStyle->newLine();
-            $symfonyStyle->writeln('<fg=bright-yellow;options=bold>Observed ' . $analysis->getFailCount() . ' warnings(s):</>');
+            $symfonyStyle->writeln('<fg=yellow;options=bold>Observed ' . $analysis->getFailCount() . ' warnings(s):</>');
             foreach ($analysis->getWarnings() as $class => $ruleWarnings) {
-                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                $symfonyStyle->writeln('- ' . $class . ':');
                 foreach ($ruleWarnings as $rule => $warnings) {
-                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    $symfonyStyle->writeln("\t" . '- ' . $rule . ':');
                     foreach ($warnings as $warning) {
-                        $symfonyStyle->writeln("\t\t" . '<fg=bright-yellow>- ' . $warning[0]
+                        $symfonyStyle->writeln("\t\t" . '<fg=yellow>- ' . $warning[0]
                             . ($warning[1] !== null ? ' (line ' . $warning[1] . ')' : '')
                             . '</>');
                     }
