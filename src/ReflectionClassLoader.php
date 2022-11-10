@@ -27,7 +27,6 @@ use Exception;
 use ReflectionException;
 use Roave\BetterReflection\Reflection\Adapter\ReflectionClass as ReflectionClassAdapter;
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
-use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use SplFileInfo;
@@ -70,11 +69,23 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
         if (array_key_exists(sha1($splFileInfo->getPathname()), $this->fileClassCache)) {
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
-        $reflector = new DefaultReflector(new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator));
 
-        /** @var array<BetterReflectionClass> $reflectedClasses */
-        $reflectedClasses = $reflector->reflectAllClasses();
-        $classes          = $reflectedClasses;
+        if (class_exists('\Roave\BetterReflection\Reflector\DefaultReflector')) {
+            /** @var array<BetterReflectionClass> $classes */
+            /** @noinspection PhpFullyQualifiedNameUsageInspection */
+            /** @psalm-suppress UndefinedClass */
+            $classes = (new \Roave\BetterReflection\Reflector\DefaultReflector(
+                new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
+            ))->reflectAllClasses();
+        } else {
+            /** @var array<BetterReflectionClass> $classes */
+            /** @noinspection PhpFullyQualifiedNameUsageInspection */
+            /** @psalm-suppress UndefinedClass */
+            $classes = (new \Roave\BetterReflection\Reflector\ClassReflector(
+                new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
+            ))->getAllClasses();
+        }
+
         if (count($classes) !== 1) {
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
         }
@@ -97,15 +108,14 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
     {
         $betterReflectionClass = BetterReflectionClass::createFromName($fqn);
 
-        $usesNames       = array_values(
+        $usesNames = array_values(
             (new PhpParser())->parseClass(new ReflectionClassAdapter($betterReflectionClass))
         );
-        $reflectionClass = new ReflectionClass(
+
+        return new ReflectionClass(
             $splFileInfo,
             $betterReflectionClass,
             $usesNames
         );
-
-        return $reflectionClass;
     }
 }

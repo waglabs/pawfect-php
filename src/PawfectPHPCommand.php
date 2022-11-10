@@ -64,10 +64,10 @@ class PawfectPHPCommand extends Command
 
     /**
      * PawfectPHPCommand constructor.
-     * @param FileLoaderInterface            $fileLoader
-     * @param RuleRepositoryInterface        $ruleRegistry
+     * @param FileLoaderInterface $fileLoader
+     * @param RuleRepositoryInterface $ruleRegistry
      * @param ReflectionClassLoaderInterface $reflectionClassLoader
-     * @param ContainerInterface             $container
+     * @param ContainerInterface $container
      */
     public function __construct(
         FileLoaderInterface $fileLoader,
@@ -104,7 +104,7 @@ class PawfectPHPCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
      */
@@ -150,19 +150,17 @@ class PawfectPHPCommand extends Command
             return 1;
         }
 
-        $results = new Results();
+        $analysis = new Analysis($symfonyStyle);
 
         $registeredRules = $this->ruleRegistry->getAllRules();
-        $results->setRegisteredRules(count(array_keys($registeredRules)));
+        $analysis->setRegisteredRules(count(array_keys($registeredRules)));
         $appliedRuleNames = [];
 
         /** @psalm-suppress PossiblyInvalidArgument */
         foreach ($this->fileLoader->yieldFiles($input->getArgument('paths')) as $classFile) {
-            $results->incrementInspectedFiles();
-            $symfonyStyle->writeln(
-                'inspecting ' . $classFile->getPathname() . ' for classes',
-                OutputInterface::VERBOSITY_DEBUG
-            );
+            $analysis->incrementInspectedFiles();
+            $analysis->debug();
+            $analysis->debug("inspecting " . $classFile->getPathname() . " for classes");
 
             try {
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
@@ -172,98 +170,114 @@ class PawfectPHPCommand extends Command
             }
 
             $appliedRules = 0;
-            $results->incrementScannedClasses();
+            $analysis->incrementInspectedClasses();
             foreach ($registeredRules as $name => $rule) {
                 try {
                     if (!$rule->supports($reflectionClass)) {
-                        $symfonyStyle->writeln(
-                            'rule ' . $name . ' does not support ' . $reflectionClass->getName(),
-                            OutputInterface::VERBOSITY_DEBUG
-                        );
+                        $analysis->debug('class is not supported by rule', $reflectionClass, $rule);
                         continue;
                     }
                 } catch (Throwable $throwable) {
-                    $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
+                    $symfonyStyle->writeln('<fg=red>[!] exception checking if ' . $classFile->getPathname() . ' is supported by ' . get_class($rule) . ', skipping</>');
                     continue;
                 }
                 if (0 === $appliedRules++) {
+                    $symfonyStyle->newLine();
                     $symfonyStyle->writeln('<options=bold>' . $reflectionClass->getName() . '</>');
                 }
                 try {
                     $appliedRuleNames[] = $name;
-                    $result             = $rule->execute($reflectionClass);
-                    if ($result === true || $result === null) {
-                        $results->incrementPasses();
-                        $symfonyStyle->writeln("<fg=green>\t✓ " . $rule->getName() . '</>');
+                    if ($rule instanceof AnalysisAwareRule) {
+                        $rule->execute($reflectionClass, $analysis);
                     } else {
-                        $results->incrementFailures();
-                        $results->logFailure($reflectionClass->getName(), $rule);
-                        $symfonyStyle->writeln("<fg=red>\tx " . $rule->getName() . ' (' . $rule->getDescription() . ')' . '</>');
+                        $result = $rule->execute($reflectionClass);
+                        if ($result === true || $result === null) {
+                            $analysis->pass($reflectionClass, $rule);
+                        } else {
+                            $analysis->fail($reflectionClass, $rule, $rule->getDescription());
+                        }
                     }
                 } catch (FailedAssertionException $assertionException) {
-                    $results->incrementFailures();
-                    $results->logFailure(
-                        $reflectionClass->getName(),
-                        $rule,
-                        $assertionException->getMessage()
-                    );
-                    $symfonyStyle->writeln("<fg=red>\tx " . $rule->getName() . ' (' . $rule->getDescription() . ')' . '</>');
+                    $analysis->fail($reflectionClass, $rule, $assertionException->getMessage());
                 } catch (Throwable $throwable) {
-                    $results->incrementErrors();
-                    $results->logException($reflectionClass->getName(), $rule, $throwable->getMessage());
-                    $symfonyStyle->writeln("<fg=red;options=bold>\t! " . $rule->getName() . ' (' . $throwable->getMessage() . ')</>');
+                    $analysis->exception($reflectionClass, $rule, $throwable);
                 }
             }
 
             if ($appliedRules === 0) {
-                $symfonyStyle->writeln(
-                    'no rules found for ' . $reflectionClass->getName(),
-                    OutputInterface::VERBOSITY_DEBUG
-                );
+                $analysis->debug('no rules found for class', $reflectionClass);
             }
         }
 
         $duration = time() - $start;
 
+        $symfonyStyle->newLine();
         $symfonyStyle->writeln(sprintf(
-            "\nRegistered Rules: %s, Inspected Files: %s, Scanned Classes: %s, Applied Rules: %s, Passes: %s, Failures: %s, Errors: %s, Time: %s",
-            $results->getRegisteredRules(),
-            $results->getInspectedFiles(),
-            $results->getScannedClasses(),
+            "<fg=blue>Registered Rules: %s, Inspected Files: %s, Scanned Classes: %s, Applied Rules: %s, Passes: %s, Failures: %s, Exceptions: %s, Warnings: %s, Time: %s</>",
+            $analysis->getRegisteredRules(),
+            $analysis->getInspectedFiles(),
+            $analysis->getInspectedClasses(),
             count(array_unique($appliedRuleNames)),
-            $results->getPasses(),
-            $results->getFailures(),
-            $results->getErrors(),
+            $analysis->getPassCount(),
+            $analysis->getFailCount(),
+            $analysis->getExceptionCount(),
+            $analysis->getWarnCount(),
             sprintf('%02d:%02d:%02d', ($duration / 3600), ($duration / 60 % 60), $duration % 60)
         ));
 
-        if ($results->getErrors() > 0) {
-            $moreThanOne = $results->getErrors() > 1;
-            $symfonyStyle->section('Errors');
-            $symfonyStyle->writeln("There " . ($moreThanOne ? 'were' : 'was') . ' ' . $results->getErrors() . ' error' . ($moreThanOne ? 's' : '') . ":\n");
-            $x = 1;
-            foreach ($results->getErrorArray() as $error) {
-                $symfonyStyle->writeln($x . ") <fg=red;options=bold>" . $error[0] . ':</> ' . $error[1]);
-                $symfonyStyle->writeln("\t" . $error[3]);
-                $symfonyStyle->writeln("\t" . $error[2]);
-                $x++;
+        if ($analysis->getFailCount() > 0) {
+            $symfonyStyle->newLine();
+            $symfonyStyle->writeln('<fg=bright-red;options=bold>Observed ' . $analysis->getFailCount() . ' failure(s):</>');
+            foreach ($analysis->getFailures() as $class => $ruleFailures) {
+                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                foreach ($ruleFailures as $rule => $failures) {
+                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    foreach ($failures as $failure) {
+                        $symfonyStyle->writeln("\t\t" . '<fg=bright-red>- ' . $failure[0]
+                            . ($failure[1] !== null ? ' (line ' . $failure[1] . ')' : '')
+                            . '</>');
+                    }
+                }
             }
         }
 
-        if ($results->getFailures() > 0) {
-            $moreThanOne = $results->getFailures() > 1;
-            $symfonyStyle->section('Failures');
-            $symfonyStyle->writeln("There " . ($moreThanOne ? 'were' : 'was') . ' ' . $results->getFailures() . ' failure' . ($moreThanOne ? 's' : '') . ":\n");
-            $x = 1;
-            foreach ($results->getFailureArray() as $failure) {
-                $symfonyStyle->writeln($x . ") <fg=red;options=bold>" . $failure[0] . ':</> ' . $failure[1]);
-                $symfonyStyle->writeln("\t" . $failure[3]);
-                $symfonyStyle->writeln("\t" . $failure[2]);
-                $x++;
+        if ($analysis->getExceptionCount() > 0) {
+            $symfonyStyle->newLine();
+            $symfonyStyle->writeln('<fg=red;options=bold>Observed ' . $analysis->getFailCount() . ' exception(s):</>');
+            foreach ($analysis->getExceptions() as $class => $ruleExceptions) {
+                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                foreach ($ruleExceptions as $rule => $exceptions) {
+                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    foreach ($exceptions as $exception) {
+                        $symfonyStyle->writeln("\t\t" . '<fg=red>- ' . $exception->getMessage()
+                            . ' (' . $exception->getFile() . ':' . $exception->getLine() . ')'
+                            . '</>');
+                    }
+                }
             }
         }
 
-        if ($results->getFailures() > 0 || $results->getErrors() > 0) {
+        if ($analysis->getWarnCount() > 0) {
+            $symfonyStyle->newLine();
+            $symfonyStyle->writeln('<fg=bright-yellow;options=bold>Observed ' . $analysis->getFailCount() . ' warnings(s):</>');
+            foreach ($analysis->getWarnings() as $class => $ruleWarnings) {
+                $symfonyStyle->writeln('<fg=bright-white>- ' . $class . ':</>');
+                foreach ($ruleWarnings as $rule => $warnings) {
+                    $symfonyStyle->writeln("\t" . '<fg=bright-white>- ' . $rule . ':</>');
+                    foreach ($warnings as $warning) {
+                        $symfonyStyle->writeln("\t\t" . '<fg=bright-yellow>- ' . $warning[0]
+                            . ($warning[1] !== null ? ' (line ' . $warning[1] . ')' : '')
+                            . '</>');
+                    }
+                }
+            }
+        }
+
+        if ($analysis->getFailCount() > 0 || $analysis->getExceptionCount() > 0) {
+            $symfonyStyle->error(sprintf('%s failure(s) and %s exception(s)', $analysis->getFailCount(), $analysis->getExceptionCount()));
+        }
+
+        if ($analysis->getFailCount() > 0 || $analysis->getExceptionCount() > 0) {
             if ($input->getOption('dry-run')) {
                 return 0;
             }

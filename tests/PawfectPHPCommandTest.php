@@ -533,7 +533,7 @@ class PawfectPHPCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('1 failure', $output);
-        self::assertStringContainsString('this is a description', $output);
+        self::assertStringContainsString('Mockery_7_WagLabs_PawfectPHP_RuleInterface', $output);
         self::assertStringNotContainsString('exception', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
@@ -599,8 +599,8 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 error', $output);
-        self::assertStringContainsString('this is a description', $output);
+        self::assertStringContainsString('Exceptions: 1', $output);
+        self::assertStringContainsString('exception running rule Mockery_7_WagLabs_PawfectPHP_RuleInterface', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
@@ -663,7 +663,7 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('exception inspecting TestClass.php, skipping', $output);
+        self::assertStringContainsString('exception checking if TestClass.php is supported by Mockery_7_WagLabs_PawfectPHP_RuleInterface, skipping', $output);
         self::assertStringContainsString('[OK] all rules pass', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
@@ -754,7 +754,7 @@ class PawfectPHPCommandTest extends TestCase
         $testClassReflectionClass->allows('getName')->andReturns('TestClass');
         $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception());
+        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception('test exception'));
 
         $ruleRegistry->expects('register')->with('test-rule', $testRule);
         $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
@@ -791,8 +791,8 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 error', $output);
-        self::assertStringContainsString('this is a description', $output);
+        self::assertStringContainsString('Exceptions: 1', $output);
+        self::assertStringContainsString('test exception', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 }
