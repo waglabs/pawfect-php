@@ -28,7 +28,6 @@ use WagLabs\PawfectPHP\AbstractRule;
 use WagLabs\PawfectPHP\Assertions\Relationships;
 use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
 use WagLabs\PawfectPHP\ReflectionClass;
-use WagLabs\PawfectPHP\Results;
 
 /**
  * Class RelationshipsTest
@@ -48,7 +47,6 @@ class RelationshipsTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('getUses')
             ->andReturn([
-                Results::class,
                 ReflectionClass::class,
             ]);
         $rule = new class () extends AbstractRule {
@@ -82,7 +80,6 @@ class RelationshipsTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('getUses')
             ->andReturn([
-                Results::class,
                 ReflectionClass::class,
             ]);
         $rule = new class () extends AbstractRule {

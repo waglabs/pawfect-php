@@ -28,6 +28,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SplFileInfo;
 use Symfony\Component\Console\Tester\CommandTester;
+use WagLabs\PawfectPHP\Analysis;
+use WagLabs\PawfectPHP\AnalysisAwareRule;
 use WagLabs\PawfectPHP\FailedAssertionException;
 use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
 use WagLabs\PawfectPHP\PawfectPHPCommand;
@@ -532,9 +534,9 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failure', $output);
-        self::assertStringContainsString('this is a description', $output);
-        self::assertStringNotContainsString('exception', $output);
+        self::assertStringContainsString('Failures: 1', $output);
+        self::assertStringContainsString('WagLabs_PawfectPHP_RuleInterface', $output);
+        self::assertStringContainsString('Exceptions: 0', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
@@ -599,8 +601,9 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 error', $output);
-        self::assertStringContainsString('this is a description', $output);
+        self::assertStringContainsString('Exceptions: 1', $output);
+        self::assertStringContainsString('exception running rule Mockery', $output);
+        self::assertStringContainsString('WagLabs_PawfectPHP_RuleInterface', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
@@ -663,7 +666,8 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('exception inspecting TestClass.php, skipping', $output);
+        self::assertStringContainsString('exception checking if TestClass.php is supported by Mockery', $output);
+        self::assertStringContainsString('WagLabs_PawfectPHP_RuleInterface, skipping', $output);
         self::assertStringContainsString('[OK] all rules pass', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
@@ -754,7 +758,7 @@ class PawfectPHPCommandTest extends TestCase
         $testClassReflectionClass->allows('getName')->andReturns('TestClass');
         $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
 
-        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception());
+        $testRule->expects('execute')->with($testClassReflectionClass)->andThrow(new Exception('test exception'));
 
         $ruleRegistry->expects('register')->with('test-rule', $testRule);
         $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
@@ -791,8 +795,77 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 error', $output);
-        self::assertStringContainsString('this is a description', $output);
+        self::assertStringContainsString('Exceptions: 1', $output);
+        self::assertStringContainsString('test exception', $output);
+        self::assertEquals(0, $commandTester->getStatusCode());
+    }
+
+    public function testAnalysisAwareRulePassesNullResponse()
+    {
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
+        $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
+
+        $ruleRegistry->expects('count')->andReturns(1);
+        $testRule = Mockery::mock(AnalysisAwareRule::class);
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
+        $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
+        $testRuleFile = Mockery::mock(SplFileInfo::class);
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
+
+        $testClassFile = Mockery::mock(SplFileInfo::class);
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
+
+        $testClassReflectionClass = Mockery::mock(ReflectionClass::class);
+        $testClassReflectionClass->allows('getSplFileInfo')->andReturns($testClassFile);
+        $testClassReflectionClass->allows('getName')->andReturns('TestClass');
+        $testRule->expects('supports')->with($testClassReflectionClass)->andReturnTrue();
+
+        $testRule->expects('execute')
+            ->withArgs(function ($reflectionClass, Analysis $analysis) use ($testRule) {
+                $analysis->warn($reflectionClass, $testRule, 'test', 1);
+                return true;
+            })->andReturns(null);
+
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+        $ruleRegistry->expects('getAllRules')->andReturns(['test-rule' => $testRule]);
+
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
+
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
+
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andReturns($testClassReflectionClass);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+            $testRuleFile,
+        ]);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+            $testClassFile,
+        ]);
+
+        $command = new PawfectPHPCommand(
+            $fileLoader,
+            $ruleRegistry,
+            $reflectionClassLoader,
+            $container
+        );
+
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            [
+                'rules' => __DIR__ . '/../examples/',
+                'paths' => [__DIR__ . '/../src'],
+            ]
+        );
+
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('all rules pass', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 }

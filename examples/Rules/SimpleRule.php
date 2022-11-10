@@ -21,6 +21,8 @@
 namespace WagLabs\PawfectPHP\Examples\Rules;
 
 use WagLabs\PawfectPHP\AbstractRule;
+use WagLabs\PawfectPHP\Analysis;
+use WagLabs\PawfectPHP\AnalysisAwareRule;
 use WagLabs\PawfectPHP\Assertions\Methods;
 use WagLabs\PawfectPHP\FailedAssertionException;
 use WagLabs\PawfectPHP\ReflectionClass;
@@ -30,13 +32,13 @@ use WagLabs\PawfectPHP\ReflectionClass;
  * @package WagLabs\PawfectPHP\Examples\Rules
  * @author  Andrew Breksa <andrew.breksa@wagwalking.com>
  */
-class SimpleRule extends AbstractRule
+class SimpleRule extends AbstractRule implements AnalysisAwareRule
 {
     use Methods;
 
     public function supports(ReflectionClass $reflectionClass): bool
     {
-        return $reflectionClass->isInstantiable();
+        return $reflectionClass->hasMethod('doSomething');
     }
 
     /**
@@ -44,9 +46,15 @@ class SimpleRule extends AbstractRule
      * @return bool|void
      * @throws FailedAssertionException
      */
-    public function execute(ReflectionClass $reflectionClass)
+    public function execute(ReflectionClass $reflectionClass, Analysis $analysis = null): void
     {
-        $this->assert($this->hasPublicMethod($reflectionClass, '__construct'));
+        if (!$this->hasPublicMethod($reflectionClass, '__construct')) {
+            $analysis->fail($reflectionClass, $this, 'Class does not have a __construct method');
+        }
+        $analysis->exception($reflectionClass, $this, new \Exception('test message'));
+        $analysis->warn($reflectionClass, $this, 'Testing...');
+        $analysis->warn($reflectionClass, $this, 'Testing...');
+        $analysis->pass($reflectionClass, $this);
     }
 
     public function getName(): string
