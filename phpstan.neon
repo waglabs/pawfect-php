@@ -4,5 +4,5 @@ parameters:
         - src
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        - '#Call to method getAllClasses\(\) on an unknown class Roave\BetterReflection\Reflector\ClassReflector.#'
-        - '#Instantiated class Roave\BetterReflection\Reflector\ClassReflector not found.#'
+        - '#Call to method getAllClasses\(\) on an unknown class Roave\\BetterReflection\\Reflector\\ClassReflector#'
+        - '#Instantiated class Roave\\BetterReflection\\Reflector\\ClassReflector not found#'
