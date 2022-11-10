@@ -98,7 +98,7 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
     }
 
     /**
-     * @param string           $fqn
+     * @param string $fqn
      * @param SplFileInfo|null $splFileInfo
      * @return ReflectionClass
      * @throws ReflectionException

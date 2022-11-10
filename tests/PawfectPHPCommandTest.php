@@ -532,9 +532,9 @@ class PawfectPHPCommandTest extends TestCase
         );
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString('1 failure', $output);
+        self::assertStringContainsString('Failures: 1', $output);
         self::assertStringContainsString('Mockery_7_WagLabs_PawfectPHP_RuleInterface', $output);
-        self::assertStringNotContainsString('exception', $output);
+        self::assertStringContainsString('Exceptions: 0', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
