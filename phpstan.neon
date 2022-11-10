@@ -1,4 +1,8 @@
 parameters:
-	level: 8
-	paths:
-		- src
+    level: 8
+    paths:
+        - src
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Call to method getAllClasses\(\) on an unknown class Roave\BetterReflection\Reflector\ClassReflector.#'
+        - '#Instantiated class Roave\BetterReflection\Reflector\ClassReflector not found.#'
