@@ -70,6 +70,7 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
 
+        // @codeCoverageIgnoreStart
         if (class_exists('\Roave\BetterReflection\Reflector\DefaultReflector')) {
             /** @var array<BetterReflectionClass> $classes */
             /** @noinspection PhpFullyQualifiedNameUsageInspection */
@@ -85,6 +86,7 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
                 new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
             ))->getAllClasses();
         }
+        // @codeCoverageIgnoreEnd
 
         if (count($classes) !== 1) {
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
