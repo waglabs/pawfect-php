@@ -18,7 +18,7 @@
   ],
   "require" : {
     "php" : "^7.4|^8.0",
-    "league/container" : "^3.3",
+    "league/container" : "^3.3 || ^4.0",
     "ext-json" : "*",
     "roave/better-reflection" : "^5.0|^4.0",
     "doctrine/annotations" : "^1.10",
