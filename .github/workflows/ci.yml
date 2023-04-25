@@ -23,7 +23,7 @@ jobs:
       - name: Run PHPStan
         run: php vendor/bin/phpstan analyse -c phpstan.neon
       - name: Run Psalm
-        run: php vendor/bin/psalm -c psalm.xml ./src
+        run: php vendor/bin/psalm -c psalm.xml
       - name: Run PHPUnit
         run: php vendor/bin/phpunit --coverage-text
       - name: Upload coverage
