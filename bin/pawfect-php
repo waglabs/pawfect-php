@@ -62,8 +62,8 @@ $container->delegate(
 $reflectionClassLoader = new ReflectionClassLoader((new BetterReflectionClass())->astLocator());
 $ruleRepository = new RuleRepository();
 
-$container->share(ReflectionClassLoaderInterface::class, $reflectionClassLoader);
-$container->share(RuleRepositoryInterface::class, $ruleRepository);
+$container->addShared(ReflectionClassLoaderInterface::class, $reflectionClassLoader);
+$container->addShared(RuleRepositoryInterface::class, $ruleRepository);
 
 $application->add(new PawfectPHPCommand(
         new FileLoader(),

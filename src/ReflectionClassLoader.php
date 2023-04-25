@@ -27,6 +27,7 @@ use Exception;
 use ReflectionException;
 use Roave\BetterReflection\Reflection\Adapter\ReflectionClass as ReflectionClassAdapter;
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use SplFileInfo;
@@ -70,23 +71,10 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
             return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
 
-        // @codeCoverageIgnoreStart
-        if (class_exists('\Roave\BetterReflection\Reflector\DefaultReflector')) {
-            /** @var array<BetterReflectionClass> $classes */
-            /** @noinspection PhpFullyQualifiedNameUsageInspection */
-            /** @psalm-suppress UndefinedClass */
-            $classes = (new \Roave\BetterReflection\Reflector\DefaultReflector(
+        /** @var array<int, BetterReflectionClass> $classes */
+        $classes = (new DefaultReflector(
                 new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
-            ))->reflectAllClasses();
-        } else {
-            /** @var array<BetterReflectionClass> $classes */
-            /** @noinspection PhpFullyQualifiedNameUsageInspection */
-            /** @psalm-suppress UndefinedClass */
-            $classes = (new \Roave\BetterReflection\Reflector\ClassReflector(
-                new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
-            ))->getAllClasses();
-        }
-        // @codeCoverageIgnoreEnd
+        ))->reflectAllClasses();
 
         if (count($classes) !== 1) {
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
