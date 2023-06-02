@@ -124,6 +124,10 @@ class PawfectPHPCommand extends Command
                 $ruleReflectionClass = $this->reflectionClassLoader->load($ruleFile);
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
+                $symfonyStyle->writeln(
+                        sprintf('[*] exception inspecting %s: %s', $ruleFile->getPathname(), $exception->getMessage()),
+                        OutputInterface::VERBOSITY_DEBUG
+                );
                 continue;
             }
             if (!$ruleReflectionClass->implementsInterface(RuleInterface::class)) {
@@ -166,6 +170,10 @@ class PawfectPHPCommand extends Command
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
+                $symfonyStyle->writeln(
+                        sprintf('[*] exception inspecting %s: %s', $classFile->getPathname(), $exception->getMessage()),
+                        OutputInterface::VERBOSITY_DEBUG
+                );
                 continue;
             }
 
