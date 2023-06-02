@@ -80,6 +80,10 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
             throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
         }
 
+        if ($classes[0]->isAnonymous()) {
+            throw new Exception($splFileInfo->getPathname() . ' contains an anonymous class which are not currently supported');
+        }
+
         $reflectionClass = $this->loadFromFqn($classes[0]->getName());
         if ($cache) {
             $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
