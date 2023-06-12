@@ -26,6 +26,7 @@ namespace WagLabs\PawfectPHP;
  * Interface RuleInterface
  * @package WagLabs\PawfectPHP
  * @author  Andrew Breksa <andrew.breksa@wagwalking.com>
+ * @deprecated
  */
 interface RuleInterface
 {

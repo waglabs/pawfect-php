@@ -101,7 +101,7 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
     public function loadFromFqn(string $fqn, ?SplFileInfo $splFileInfo = null): ReflectionClass
     {
         $betterReflectionClass = BetterReflectionClass::createFromName($fqn);
-        
+
         $usesNames = array_values(
             (new PhpParser())->parseUseStatements(new ReflectionClassAdapter($betterReflectionClass))
         );

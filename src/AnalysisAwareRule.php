@@ -26,12 +26,28 @@ namespace WagLabs\PawfectPHP;
  * @package WagLabs\PawfectPHP
  * @author Andrew Breksa <andrew.breksa@wagwalking.com>
  */
-interface AnalysisAwareRule extends RuleInterface
+interface AnalysisAwareRule
 {
     /**
      * @param ReflectionClass $reflectionClass
-     * @param Analysis|null $analysis
+     * @param Analysis|null   $analysis
      * @return void
      */
     public function execute(ReflectionClass $reflectionClass, Analysis $analysis = null): void;
+
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @return bool
+     */
+    public function supports(ReflectionClass $reflectionClass): bool;
+
+    /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string;
 }

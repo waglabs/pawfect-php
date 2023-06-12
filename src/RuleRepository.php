@@ -30,21 +30,21 @@ namespace WagLabs\PawfectPHP;
 class RuleRepository implements RuleRepositoryInterface
 {
     /**
-     * @var array<string, RuleInterface>
+     * @var array<string, RuleInterface|AnalysisAwareRule>
      */
     protected $rules = [];
 
     /**
      * @param string $name
-     * @return RuleInterface
+     * @return RuleInterface|AnalysisAwareRule
      */
-    public function getRule(string $name): RuleInterface
+    public function getRule(string $name): mixed
     {
         return $this->rules[$name];
     }
 
     /**
-     * @return array<string, RuleInterface>
+     * @return array<string, RuleInterface|AnalysisAwareRule>
      */
     public function getAllRules(): array
     {
@@ -52,10 +52,10 @@ class RuleRepository implements RuleRepositoryInterface
     }
 
     /**
-     * @param string        $name
-     * @param RuleInterface $rule
+     * @param string                          $name
+     * @param RuleInterface|AnalysisAwareRule $rule
      */
-    public function register(string $name, RuleInterface $rule): void
+    public function register(string $name, $rule): void
     {
         $this->rules[$name] = $rule;
     }

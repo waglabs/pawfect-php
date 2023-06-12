@@ -67,11 +67,11 @@ class Analysis
 
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param RuleInterface $rule
+     * @param ReflectionClass                 $reflectionClass
+     * @param RuleInterface|AnalysisAwareRule $rule
      * @return void
      */
-    public function pass(ReflectionClass $reflectionClass, RuleInterface $rule): void
+    public function pass(ReflectionClass $reflectionClass, $rule): void
     {
         if (!array_key_exists($reflectionClass->getName(), $this->passes)) {
             $this->passes[$reflectionClass->getName()] = [];
@@ -82,17 +82,17 @@ class Analysis
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param RuleInterface $rule
-     * @param string $message
-     * @param int|null $line
+     * @param ReflectionClass                 $reflectionClass
+     * @param RuleInterface|AnalysisAwareRule $rule
+     * @param string                          $message
+     * @param int|null                        $line
      * @return void
      */
     public function fail(
-        ReflectionClass $reflectionClass,
-        RuleInterface $rule,
-        string $message = null,
-        int $line = null
+            ReflectionClass $reflectionClass,
+                            $rule,
+            string          $message = null,
+            int             $line = null
     ): void {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->failures)) {
@@ -102,7 +102,7 @@ class Analysis
             $this->failures[$reflectionClass->getName()][$ruleClass] = [];
         }
         $this->failures[$reflectionClass->getName()][$ruleClass][] = [
-            $message,
+                $message,
             $line,
         ];
         $this->symfonyStyle->writeln(
@@ -113,13 +113,13 @@ class Analysis
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param RuleInterface $rule
-     * @param string $message
-     * @param int|null $line
+     * @param ReflectionClass                 $reflectionClass
+     * @param RuleInterface|AnalysisAwareRule $rule
+     * @param string                          $message
+     * @param int|null                        $line
      * @return void
      */
-    public function warn(ReflectionClass $reflectionClass, RuleInterface $rule, string $message, int $line = null): void
+    public function warn(ReflectionClass $reflectionClass, $rule, string $message, int $line = null): void
     {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->warnings)) {
@@ -129,8 +129,8 @@ class Analysis
             $this->warnings[$reflectionClass->getName()][$ruleClass] = [];
         }
         $this->warnings[$reflectionClass->getName()][$ruleClass][] = [
-            $message,
-            $line,
+                $message,
+                $line,
         ];
         $this->symfonyStyle->writeln(
             '<fg=yellow>[?] warning while running rule ' . $ruleClass . ': ' . $message
@@ -140,12 +140,12 @@ class Analysis
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param RuleInterface $rule
-     * @param Throwable $throwable
+     * @param ReflectionClass                 $reflectionClass
+     * @param RuleInterface|AnalysisAwareRule $rule
+     * @param Throwable                       $throwable
      * @return void
      */
-    public function exception(ReflectionClass $reflectionClass, RuleInterface $rule, Throwable $throwable): void
+    public function exception(ReflectionClass $reflectionClass, $rule, Throwable $throwable): void
     {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->exceptions)) {
@@ -162,28 +162,28 @@ class Analysis
     }
 
     /**
-     * @param string $message
-     * @param ReflectionClass|null $reflectionClass
-     * @param RuleInterface|null $rule
+     * @param string                               $message
+     * @param ReflectionClass|null                 $reflectionClass
+     * @param RuleInterface|AnalysisAwareRule|null $rule
      * @return void
      */
     public function debug(
-        string $message = '',
-        ?ReflectionClass $reflectionClass = null,
-        ?RuleInterface $rule = null
+            string           $message = '',
+            ?ReflectionClass $reflectionClass = null,
+                             $rule = null
     ): void {
         if (mb_strlen($message) === 0) {
             $this->symfonyStyle->writeln('', OutputInterface::VERBOSITY_DEBUG);
             return;
         }
         $this->symfonyStyle->writeln(
-            sprintf(
-                '<fg=yellow>[*] %s (Class: %s, Rule: %s)',
-                $message,
-                ($reflectionClass !== null ? $reflectionClass->getName() : 'N/A'),
-                ($rule !== null ? get_class($rule) : 'N/A')
-            ),
-            OutputInterface::VERBOSITY_DEBUG
+                sprintf(
+                        '<fg=yellow>[*] %s (Class: %s, Rule: %s)',
+                        $message,
+                        ($reflectionClass !== null ? $reflectionClass->getName() : 'N/A'),
+                        ($rule !== null ? get_class($rule) : 'N/A')
+                ),
+                OutputInterface::VERBOSITY_DEBUG
         );
     }
 

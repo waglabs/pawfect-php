@@ -31,20 +31,20 @@ interface RuleRepositoryInterface
 {
     /**
      * @param string $name
-     * @return RuleInterface
+     * @return RuleInterface|AnalysisAwareRule
      */
-    public function getRule(string $name): RuleInterface;
+    public function getRule(string $name): mixed;
 
     /**
-     * @return array<RuleInterface>
+     * @return array<RuleInterface|AnalysisAwareRule>
      */
     public function getAllRules(): array;
 
     /**
-     * @param string        $name
-     * @param RuleInterface $rule
+     * @param string                          $name
+     * @param RuleInterface|AnalysisAwareRule $rule
      */
-    public function register(string $name, RuleInterface $rule): void;
+    public function register(string $name, $rule): void;
 
     /**
      * @return int

@@ -130,9 +130,14 @@ class PawfectPHPCommand extends Command
                 );
                 continue;
             }
-            if (!$ruleReflectionClass->implementsInterface(RuleInterface::class)) {
+            if (!$ruleReflectionClass->implementsInterface(RuleInterface::class) && !$ruleReflectionClass->implementsInterface(AnalysisAwareRule::class)) {
                 $symfonyStyle->writeln(
-                    $ruleReflectionClass->getName() . ' does not implement ' . RuleInterface::class,
+                    sprintf(
+                        '%s does not implement one of %s, %s',
+                        $ruleReflectionClass->getName(),
+                        RuleInterface::class,
+                        AnalysisAwareRule::class
+                    ),
                     OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;

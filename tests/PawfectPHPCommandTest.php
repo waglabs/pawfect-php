@@ -93,6 +93,7 @@ class PawfectPHPCommandTest extends TestCase
         $ruleRegistry->expects('count')->andReturns(0);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
         $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(false);
+        $testRuleReflectionClass->expects('implementsInterface')->with(AnalysisAwareRule::class)->andReturns(false);
         $testRuleReflectionClass->expects('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
         $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
@@ -812,7 +813,8 @@ class PawfectPHPCommandTest extends TestCase
         $testRule->allows('getName')->andReturns('test-rule');
         $testRule->allows('getDescription')->andReturns('this is a description');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
-        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(false);
+        $testRuleReflectionClass->expects('implementsInterface')->with(AnalysisAwareRule::class)->andReturns(true);
         $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
         $testRuleFile = Mockery::mock(SplFileInfo::class);
         $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
