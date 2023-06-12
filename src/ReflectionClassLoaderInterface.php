@@ -24,6 +24,7 @@ namespace WagLabs\PawfectPHP;
 
 use ReflectionException;
 use SplFileInfo;
+use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 
 /**
  * Interface ReflectionClassLoaderInterface
@@ -36,6 +37,7 @@ interface ReflectionClassLoaderInterface
      * @param SplFileInfo $splFileInfo
      * @return ReflectionClass
      * @throws ReflectionException
+     * @throws NoSupportedClassesFoundInFile
      */
     public function load(SplFileInfo $splFileInfo): ReflectionClass;
 

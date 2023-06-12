@@ -89,10 +89,10 @@ class Analysis
      * @return void
      */
     public function fail(
-            ReflectionClass $reflectionClass,
-                            $rule,
-            string          $message = null,
-            int             $line = null
+        ReflectionClass $reflectionClass,
+        $rule,
+        string          $message = null,
+        int             $line = null
     ): void {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->failures)) {
@@ -168,22 +168,22 @@ class Analysis
      * @return void
      */
     public function debug(
-            string           $message = '',
-            ?ReflectionClass $reflectionClass = null,
-                             $rule = null
+        string           $message = '',
+        ?ReflectionClass $reflectionClass = null,
+        $rule = null
     ): void {
         if (mb_strlen($message) === 0) {
             $this->symfonyStyle->writeln('', OutputInterface::VERBOSITY_DEBUG);
             return;
         }
         $this->symfonyStyle->writeln(
-                sprintf(
-                        '<fg=yellow>[*] %s (Class: %s, Rule: %s)',
-                        $message,
-                        ($reflectionClass !== null ? $reflectionClass->getName() : 'N/A'),
-                        ($rule !== null ? get_class($rule) : 'N/A')
-                ),
-                OutputInterface::VERBOSITY_DEBUG
+            sprintf(
+                '<fg=yellow>[*] %s (Class: %s, Rule: %s)',
+                $message,
+                ($reflectionClass !== null ? $reflectionClass->getName() : 'N/A'),
+                ($rule !== null ? get_class($rule) : 'N/A')
+            ),
+            OutputInterface::VERBOSITY_DEBUG
         );
     }
 

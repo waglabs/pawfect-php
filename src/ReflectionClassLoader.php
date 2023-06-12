@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace WagLabs\PawfectPHP;
 
 use Doctrine\Common\Annotations\PhpParser;
-use Exception;
 use ReflectionException;
 use Roave\BetterReflection\Reflection\Adapter\ReflectionClass as ReflectionClassAdapter;
 use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
@@ -31,6 +30,7 @@ use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use SplFileInfo;
+use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 
 /**
  * Class ReflectionClassLoader
@@ -76,12 +76,17 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
             new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
         ))->reflectAllClasses();
 
-        if (count($classes) !== 1) {
-            throw new Exception('unable to load a class in ' . $splFileInfo->getPathname());
+        $supportedClasses = [];
+        foreach ($classes as $class) {
+            if ($class->isAnonymous()) {
+                continue;
+            }
+            $supportedClasses[] = $class;
         }
+        $classes = $supportedClasses;
 
-        if ($classes[0]->isAnonymous()) {
-            throw new Exception($splFileInfo->getPathname() . ' contains an anonymous class which are not currently supported');
+        if (count($classes) !== 1) {
+            throw new NoSupportedClassesFoundInFile('unable to load a single named class from ' . $splFileInfo->getPathname());
         }
 
         $reflectionClass = $this->loadFromFqn($classes[0]->getName());

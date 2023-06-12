@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+  <file src="src/AbstractAnnotationRule.php">
+    <DeprecatedInterface>
+      <code>AbstractAnnotationRule</code>
+    </DeprecatedInterface>
+  </file>
+  <file src="src/AbstractRule.php">
+    <DeprecatedInterface>
+      <code>AbstractRule</code>
+    </DeprecatedInterface>
+  </file>
+  <file src="src/Analysis.php">
+    <DeprecatedInterface>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule|null</code>
+    </DeprecatedInterface>
+  </file>
+  <file src="src/PawfectPHPCommand.php">
+    <DeprecatedInterface>
+      <code>$ruleInstance</code>
+    </DeprecatedInterface>
+  </file>
+  <file src="src/RuleRepository.php">
+    <DeprecatedInterface>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code><![CDATA[array<string, RuleInterface|AnalysisAwareRule>]]></code>
+      <code><![CDATA[array<string, RuleInterface|AnalysisAwareRule>]]></code>
+      <code>protected $rules = [];</code>
+    </DeprecatedInterface>
+  </file>
+  <file src="src/RuleRepositoryInterface.php">
+    <DeprecatedInterface>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code>RuleInterface|AnalysisAwareRule</code>
+      <code><![CDATA[array<RuleInterface|AnalysisAwareRule>]]></code>
+    </DeprecatedInterface>
+  </file>
+</files>

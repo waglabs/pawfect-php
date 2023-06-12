@@ -85,7 +85,7 @@ class ReflectionClassLoaderTest extends TestCase
 
         $splFileInfo = new SplFileInfo(__DIR__ . '/../bin/pawfect-php');
 
-        self::expectExceptionMessage('unable to load a class in ' . __DIR__ . '/../bin/pawfect-php');
+        $this->expectExceptionMessage('unable to load a single named class from ' . __DIR__ . '/../bin/pawfect-php');
 
         $reflectionClassLoader->load($splFileInfo);
     }

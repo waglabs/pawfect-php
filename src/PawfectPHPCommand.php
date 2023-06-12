@@ -30,6 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
 
 /**
@@ -122,6 +123,12 @@ class PawfectPHPCommand extends Command
             );
             try {
                 $ruleReflectionClass = $this->reflectionClassLoader->load($ruleFile);
+            } catch (NoSupportedClassesFoundInFile $noSupportedClassesFoundInFile) {
+                $symfonyStyle->writeln(
+                    sprintf('[*] no supported classes found in %s: %s', $ruleFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
+                );
+                continue;
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
@@ -173,6 +180,12 @@ class PawfectPHPCommand extends Command
 
             try {
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
+            } catch (NoSupportedClassesFoundInFile $noSupportedClassesFoundInFile) {
+                $symfonyStyle->writeln(
+                    sprintf('[*] no supported classes found in %s: %s', $classFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
+                );
+                continue;
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
