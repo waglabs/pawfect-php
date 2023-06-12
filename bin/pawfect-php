@@ -72,15 +72,16 @@ $application->add(new PawfectPHPCommand(
         $container
 ));
 
-AnnotationRegistry::registerLoader(function ($className) use ($reflectionClassLoader) {
-    try {
-        $reflectionClassLoader->loadFromFqn('\\' . ltrim($className, '\\'));
+if (method_exists(AnnotationRegistry::class, 'registerLoader')) {
+    AnnotationRegistry::registerLoader(function ($className) use ($reflectionClassLoader) {
+        try {
+            $reflectionClassLoader->loadFromFqn('\\' . ltrim($className, '\\'));
 
-        return true;
-    }
-    catch (\Throwable $throwable) {
-        return false;
-    }
-});
+            return true;
+        } catch (Throwable $throwable) {
+            return false;
+        }
+    });
+}
 
 $application->run();

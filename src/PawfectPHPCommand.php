@@ -125,8 +125,8 @@ class PawfectPHPCommand extends Command
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
-                        sprintf('[*] exception inspecting %s: %s', $ruleFile->getPathname(), $exception->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] exception inspecting %s: %s', $ruleFile->getPathname(), $exception->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             }
@@ -171,8 +171,8 @@ class PawfectPHPCommand extends Command
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
-                        sprintf('[*] exception inspecting %s: %s', $classFile->getPathname(), $exception->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] exception inspecting %s: %s', $classFile->getPathname(), $exception->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             }
@@ -233,7 +233,7 @@ class PawfectPHPCommand extends Command
             $analysis->getPassCount(),
             $analysis->getFailCount(),
             $analysis->getExceptionCount(),
-            $analysis->getWarnCount(), 
+            $analysis->getWarnCount(),
             sprintf('%02d:%02d:%02d', (int)($duration / 3600), ((int)($duration / 60) % 60), $duration % 60)
         ));
 

@@ -73,7 +73,7 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
 
         /** @var array<int, BetterReflectionClass> $classes */
         $classes = (new DefaultReflector(
-                new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
+            new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
         ))->reflectAllClasses();
 
         if (count($classes) !== 1) {
@@ -101,9 +101,9 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
     public function loadFromFqn(string $fqn, ?SplFileInfo $splFileInfo = null): ReflectionClass
     {
         $betterReflectionClass = BetterReflectionClass::createFromName($fqn);
-
+        
         $usesNames = array_values(
-            (new PhpParser())->parseClass(new ReflectionClassAdapter($betterReflectionClass))
+            (new PhpParser())->parseUseStatements(new ReflectionClassAdapter($betterReflectionClass))
         );
 
         return new ReflectionClass(
