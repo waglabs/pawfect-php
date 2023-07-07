@@ -1,67 +1,73 @@
 {
-  "name" : "waglabs/pawfect-php",
-  "minimum-stability" : "dev",
-  "prefer-stable" : true,
-  "type" : "library",
-  "version" : "3.0.1",
-  "license" : "AGPL-3.0-or-later",
-  "description" : "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
-  "authors" : [
+  "name": "waglabs/pawfect-php",
+  "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
+  "license": "AGPL-3.0-or-later",
+  "type": "library",
+  "version": "3.1.0",
+  "authors": [
     {
-      "name" : "Andrew Breksa",
-      "email" : "andrew.breksa@wagwalking.com"
+      "name": "Andrew Breksa",
+      "email": "andrew.breksa@wagwalking.com"
     },
     {
-      "name" : "Tyson Green",
-      "email" : "tyson.green@wagwalking.com"
+      "name": "Tyson Green",
+      "email": "tyson.green@wagwalking.com"
     }
   ],
-  "require" : {
-    "php" : "^8.0",
-    "league/container" : "^4.0",
-    "ext-json" : "*",
-    "roave/better-reflection" : "^5.0",
-    "doctrine/annotations" : "^1.0|^2.0",
-    "symfony/console" : "^4.0|^5.0|^6.0"
+  "require": {
+    "php": "^8.0",
+    "ext-json": "*",
+    "doctrine/annotations": "^1.0 || ^2.0",
+    "league/container": "^4.0",
+    "roave/better-reflection": "^5.0",
+    "symfony/console": "^4.0 || ^5.0 || ^6.0"
   },
-  "autoload" : {
-    "psr-4" : {
-      "WagLabs\\PawfectPHP\\" : "src"
+  "require-dev": {
+    "brainmaestro/composer-git-hooks": "^2.8",
+    "ergebnis/composer-normalize": "^2.32",
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "mockery/mockery": "^1.4",
+    "phpstan/phpstan": "^1.8",
+    "phpunit/phpunit": "^9.5",
+    "roave/security-advisories": "dev-latest",
+    "vimeo/psalm": "^4.4 || ^5.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "WagLabs\\PawfectPHP\\": "src"
     }
   },
-  "autoload-dev" : {
-    "psr-4" : {
-      "WagLabs\\PawfectPHP\\Tests\\" : "./tests",
-      "WagLabs\\PawfectPHP\\Examples\\" : "./examples"
+  "autoload-dev": {
+    "psr-4": {
+      "WagLabs\\PawfectPHP\\Examples\\": "./examples",
+      "WagLabs\\PawfectPHP\\Tests\\": "./tests"
     }
   },
-  "bin" : "bin/pawfect-php",
-  "require-dev" : {
-    "phpunit/phpunit" : "^9.5",
-    "mockery/mockery" : "^1.4",
-    "phpstan/phpstan" : "^1.8",
-    "vimeo/psalm" : "^4.4 || ^5.0",
-    "roave/security-advisories" : "dev-latest",
-    "brainmaestro/composer-git-hooks" : "^2.8",
-    "friendsofphp/php-cs-fixer" : "^3.0"
+  "bin": "bin/pawfect-php",
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
   },
-  "scripts" : {
-    "cghooks" : "vendor/bin/cghooks",
-    "cs-fixer" : "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin",
-    "phpunit" : "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
-    "phpstan" : "php vendor/bin/phpstan analyse -c phpstan.neon",
-    "psalm" : "php vendor/bin/psalm -c psalm.xml"
-  },
-  "extra" : {
-    "hooks" : {
-      "pre-commit" : [
+  "extra": {
+    "hooks": {
+      "post-merge": [
+        "cghooks update"
+      ],
+      "pre-commit": [
         "composer phpstan",
         "composer psalm",
         "composer phpunit"
-      ],
-      "post-merge" : [
-        "cghooks update"
       ]
     }
+  },
+  "scripts": {
+    "cghooks": "vendor/bin/cghooks",
+    "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin",
+    "phpstan": "php vendor/bin/phpstan analyse -c phpstan.neon",
+    "phpunit": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
+    "psalm": "php vendor/bin/psalm -c psalm.xml"
   }
 }
