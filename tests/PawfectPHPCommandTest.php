@@ -47,7 +47,7 @@ class PawfectPHPCommandTest extends TestCase
 {
     public function tearDown(): void
     {
-        //  Mockery::close();
+        Mockery::close();
         parent::tearDown();
     }
 
@@ -173,9 +173,9 @@ class PawfectPHPCommandTest extends TestCase
 
         $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->expects('getName')->andReturns('test-rule');
+        $testRule->allows('getName')->andReturns('test-rule');
         $ruleRegistry->expects('getAllRules')->andReturn([
-            'test-rule' => $testRule,
+                'test-rule' => $testRule,
         ]);
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
         $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
@@ -205,10 +205,75 @@ class PawfectPHPCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            [
-                'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src'],
-            ]
+                [
+                        'rules' => __DIR__ . '/../examples/',
+                        'paths' => [__DIR__ . '/../src'],
+                ]
+        );
+
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('all rules pass', $output);
+        self::assertEquals(0, $commandTester->getStatusCode());
+    }
+
+    public function testRuleSkipped()
+    {
+        $fileLoader = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
+        $container = Mockery::mock(ContainerInterface::class);
+
+        $ruleRegistry->expects('count')->andReturns(1);
+        $testRule = Mockery::mock(RuleInterface::class);
+        $testRule->allows('getName')->andReturns('TestRule');
+        $testRuleNotSkipped = Mockery::mock(AnalysisAwareRule::class);
+        $testRuleNotSkipped->allows('getName')->andReturns('TestRuleNotSkipped');
+        $ruleRegistry->expects('getAllRules')->andReturn([
+                'TestRuleNotSkipped' => $testRuleNotSkipped,
+        ]);
+        $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
+        $testRuleFile = Mockery::mock(SplFileInfo::class);
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
+
+        $testRuleNoTskippedReflectionClass = Mockery::mock(ReflectionClass::class);
+        $testRuleNoTskippedReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(false);
+        $testRuleNoTskippedReflectionClass->expects('implementsInterface')->with(AnalysisAwareRule::class)->andReturns(true);
+        $testRuleNoTskippedReflectionClass->allows('getName')->andReturns('TestRuleNotSkipped');
+        $testRuleNotSkippedFile = Mockery::mock(SplFileInfo::class);
+        $testRuleNotSkippedFile->allows('getPathname')->andReturns('TestRuleNotSkipped.php');
+
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
+        $container->expects('get')->with('TestRuleNotSkipped')->andReturns($testRuleNotSkipped);
+
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
+        $reflectionClassLoader->expects('load')->with($testRuleNotSkippedFile)->andReturns($testRuleNoTskippedReflectionClass);
+
+        $ruleRegistry->expects('register')->with('TestRuleNotSkipped', $testRuleNotSkipped);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+                $testRuleFile,
+                $testRuleNotSkippedFile
+        ]);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([]);
+
+        $command = new PawfectPHPCommand(
+                $fileLoader,
+                $ruleRegistry,
+                $reflectionClassLoader,
+                $container
+        );
+
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                [
+                        'rules' => __DIR__ . '/../examples/',
+                        'paths' => [__DIR__ . '/../src'],
+                        '--skip' => ['TestRule']
+                ]
         );
 
         $output = $commandTester->getDisplay();
@@ -218,14 +283,14 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoRulesForClass()
     {
-        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container             = Mockery::mock(ContainerInterface::class);
+        $container = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
-        $testRule->expects('getName')->andReturns('test-rule');
+        $testRule->allows('getName')->andReturns('test-rule');
         $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
         $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
         $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
