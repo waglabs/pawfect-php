@@ -3,7 +3,7 @@
   "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
   "license": "AGPL-3.0-or-later",
   "type": "library",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "authors": [
     {
       "name": "Andrew Breksa",
@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.8",
-    "ergebnis/composer-normalize": "^2.32",
+    "ergebnis/composer-normalize": "2.31.0",
     "friendsofphp/php-cs-fixer": "^3.0",
     "mockery/mockery": "^1.4",
     "phpstan/phpstan": "^1.8",
