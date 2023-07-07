@@ -26,6 +26,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\BetterReflection;
 use SplFileInfo;
+use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 use WagLabs\PawfectPHP\ReflectionClass;
 use WagLabs\PawfectPHP\ReflectionClassLoader;
 
@@ -58,6 +59,17 @@ class ReflectionClassLoaderTest extends TestCase
         self::assertInstanceOf(ReflectionClass::class, $reflectionClass);
 
         self::assertContains('PHPUnit\Framework\TestCase', $reflectionClass->getUses());
+    }
+
+    public function testLoadAnonymousClass()
+    {
+        $locator               = (new BetterReflection())->astLocator();
+        $reflectionClassLoader = new ReflectionClassLoader($locator);
+
+        $splFileInfo = new SplFileInfo(__DIR__ . '/../examples/Source/anonymous_class.php');
+
+        $this->expectException(NoSupportedClassesFoundInFile::class);
+        $reflectionClassLoader->load($splFileInfo);
     }
 
     public function testLoadNoCache()

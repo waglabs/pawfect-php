@@ -27,9 +27,11 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SplFileInfo;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use WagLabs\PawfectPHP\Analysis;
 use WagLabs\PawfectPHP\AnalysisAwareRule;
+use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 use WagLabs\PawfectPHP\FailedAssertionException;
 use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
 use WagLabs\PawfectPHP\PawfectPHPCommand;
@@ -153,14 +155,56 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
-                'rules' => __DIR__ . '/../examples/',
-                'paths' => __DIR__ . '/../src',
-            ]
+                        'rules' => __DIR__ . '/../examples/',
+                        'paths' => __DIR__ . '/../src',
+                ]
         );
 
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('no rules found', $output);
         self::assertStringContainsString('exception inspecting TestRule.php, skipping', $output);
+        self::assertEquals(1, $commandTester->getStatusCode());
+    }
+
+    public function testNoSupportedClassesFoundInFileWhileLoadingRuleFile()
+    {
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
+        $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
+
+        $ruleRegistry->expects('count')->andReturns(0);
+        $testRuleFile = Mockery::mock(SplFileInfo::class);
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
+
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andThrow(NoSupportedClassesFoundInFile::class);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+                $testRuleFile,
+        ]);
+
+        $command = new PawfectPHPCommand(
+            $fileLoader,
+            $ruleRegistry,
+            $reflectionClassLoader,
+            $container
+        );
+
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            [
+                        'rules' => __DIR__ . '/../examples/',
+                        'paths' => __DIR__ . '/../src',
+                ],
+            [
+                        'verbosity' => ConsoleOutput::VERBOSITY_DEBUG,
+                ]
+        );
+
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('no rules found', $output);
+        self::assertStringContainsString('no supported classes found in TestRule.php', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
@@ -205,7 +249,7 @@ class PawfectPHPCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-                [
+            [
                         'rules' => __DIR__ . '/../examples/',
                         'paths' => [__DIR__ . '/../src'],
                 ]
@@ -218,10 +262,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testRuleSkipped()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
@@ -254,25 +298,25 @@ class PawfectPHPCommandTest extends TestCase
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
                 $testRuleFile,
-                $testRuleNotSkippedFile
+                $testRuleNotSkippedFile,
         ]);
 
         $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([]);
 
         $command = new PawfectPHPCommand(
-                $fileLoader,
-                $ruleRegistry,
-                $reflectionClassLoader,
-                $container
+            $fileLoader,
+            $ruleRegistry,
+            $reflectionClassLoader,
+            $container
         );
 
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-                [
-                        'rules' => __DIR__ . '/../examples/',
-                        'paths' => [__DIR__ . '/../src'],
-                        '--skip' => ['TestRule']
+            [
+                        'rules'  => __DIR__ . '/../examples/',
+                        'paths'  => [__DIR__ . '/../src'],
+                        '--skip' => ['TestRule'],
                 ]
         );
 
@@ -283,10 +327,10 @@ class PawfectPHPCommandTest extends TestCase
 
     public function testNoRulesForClass()
     {
-        $fileLoader = Mockery::mock(FileLoaderInterface::class);
-        $ruleRegistry = Mockery::mock(RuleRepositoryInterface::class);
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
         $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
-        $container = Mockery::mock(ContainerInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
 
         $ruleRegistry->expects('count')->andReturns(1);
         $testRule = Mockery::mock(RuleInterface::class);
@@ -788,14 +832,78 @@ class PawfectPHPCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
-                'rules' => __DIR__ . '/../examples/',
-                'paths' => [__DIR__ . '/../src'],
+                    'rules' => __DIR__ . '/../examples/',
+                    'paths' => [__DIR__ . '/../src'],
             ]
         );
 
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('exception inspecting TestClass.php, skipping', $output);
         self::assertStringContainsString('[OK] all rules pass', $output);
+        self::assertEquals(0, $commandTester->getStatusCode());
+    }
+
+    public function testNoSupportedClassesFoundInFileWhileLoadingClassFile()
+    {
+        $fileLoader            = Mockery::mock(FileLoaderInterface::class);
+        $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
+        $reflectionClassLoader = Mockery::mock(ReflectionClassLoaderInterface::class);
+        $container             = Mockery::mock(ContainerInterface::class);
+
+        $ruleRegistry->expects('count')->andReturns(1);
+        $testRule = Mockery::mock(RuleInterface::class);
+        $testRule->allows('getName')->andReturns('test-rule');
+        $testRule->allows('getDescription')->andReturns('this is a description');
+        $ruleRegistry->expects('getAllRules')->andReturns([
+                'test-rule' => $testRule,
+        ]);
+        $testRuleReflectionClass = Mockery::mock(ReflectionClass::class);
+        $testRuleReflectionClass->expects('implementsInterface')->with(RuleInterface::class)->andReturns(true);
+        $testRuleReflectionClass->allows('getName')->andReturns('TestRule');
+        $testRuleFile = Mockery::mock(SplFileInfo::class);
+        $testRuleFile->allows('getPathname')->andReturns('TestRule.php');
+
+        $testClassFile = Mockery::mock(SplFileInfo::class);
+        $testClassFile->allows('getPathname')->andReturns('TestClass.php');
+
+        $ruleRegistry->expects('register')->with('test-rule', $testRule);
+
+        $container->expects('get')->with('TestRule')->andReturns($testRule);
+
+        $reflectionClassLoader->expects('load')->with($testRuleFile)->andReturns($testRuleReflectionClass);
+
+        $reflectionClassLoader->expects('load')->with($testClassFile)->andThrow(NoSupportedClassesFoundInFile::class);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../examples/'])->andReturns([
+                $testRuleFile,
+        ]);
+
+        $fileLoader->expects('yieldFiles')->with([__DIR__ . '/../src'])->andReturns([
+                $testClassFile,
+        ]);
+
+        $command = new PawfectPHPCommand(
+            $fileLoader,
+            $ruleRegistry,
+            $reflectionClassLoader,
+            $container
+        );
+
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            [
+                        'rules' => __DIR__ . '/../examples/',
+                        'paths' => [__DIR__ . '/../src'],
+                ],
+            [
+                        'verbosity' => ConsoleOutput::VERBOSITY_DEBUG,
+                ]
+        );
+
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('[OK] all rules pass', $output);
+        self::assertStringContainsString('no supported classes found in TestClass.php', $output);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 

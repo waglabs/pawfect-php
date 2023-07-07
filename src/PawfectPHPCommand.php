@@ -71,10 +71,10 @@ class PawfectPHPCommand extends Command
      * @param ContainerInterface $container
      */
     public function __construct(
-            FileLoaderInterface $fileLoader,
-            RuleRepositoryInterface $ruleRegistry,
-            ReflectionClassLoaderInterface $reflectionClassLoader,
-            ContainerInterface $container
+        FileLoaderInterface $fileLoader,
+        RuleRepositoryInterface $ruleRegistry,
+        ReflectionClassLoaderInterface $reflectionClassLoader,
+        ContainerInterface $container
     ) {
         parent::__construct();
         $this->fileLoader            = $fileLoader;
@@ -87,20 +87,20 @@ class PawfectPHPCommand extends Command
     {
         $this->setDescription('Scans application code and runs discovered classes through the provided rules');
         $this->addArgument(
-                'rules',
-                InputArgument::REQUIRED,
-                'The directory to inspect for rules'
+            'rules',
+            InputArgument::REQUIRED,
+            'The directory to inspect for rules'
         );
         $this->addArgument(
-                'paths',
-                InputArgument::IS_ARRAY,
-                'The list of directories and files to scan'
+            'paths',
+            InputArgument::IS_ARRAY,
+            'The list of directories and files to scan'
         );
         $this->addOption(
-                'dry-run',
-                'd',
-                InputOption::VALUE_NONE,
-                'If passed, the application will not return with a non-zero exit code if there are any rule failures'
+            'dry-run',
+            'd',
+            InputOption::VALUE_NONE,
+            'If passed, the application will not return with a non-zero exit code if there are any rule failures'
         );
         $this->addOption('skip', 's', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Do not run the rule passed');
     }
@@ -119,34 +119,34 @@ class PawfectPHPCommand extends Command
         /** @psalm-suppress PossiblyInvalidCast */
         foreach ($this->fileLoader->yieldFiles([(string)$input->getArgument('rules')]) as $ruleFile) {
             $symfonyStyle->writeln(
-                    'inspecting ' . $ruleFile->getPathname() . ' for rules',
-                    OutputInterface::VERBOSITY_DEBUG
+                'inspecting ' . $ruleFile->getPathname() . ' for rules',
+                OutputInterface::VERBOSITY_DEBUG
             );
             try {
                 $ruleReflectionClass = $this->reflectionClassLoader->load($ruleFile);
             } catch (NoSupportedClassesFoundInFile $noSupportedClassesFoundInFile) {
                 $symfonyStyle->writeln(
-                        sprintf('[*] no supported classes found in %s: %s', $ruleFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] no supported classes found in %s: %s', $ruleFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $ruleFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
-                        sprintf('[*] exception inspecting %s: %s', $ruleFile->getPathname(), $exception->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] exception inspecting %s: %s', $ruleFile->getPathname(), $exception->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             }
             if (!$ruleReflectionClass->implementsInterface(RuleInterface::class) && !$ruleReflectionClass->implementsInterface(AnalysisAwareRule::class)) {
                 $symfonyStyle->writeln(
-                        sprintf(
-                                '%s does not implement one of %s, %s',
-                                $ruleReflectionClass->getName(),
-                                RuleInterface::class,
-                                AnalysisAwareRule::class
-                        ),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf(
+                        '%s does not implement one of %s, %s',
+                        $ruleReflectionClass->getName(),
+                        RuleInterface::class,
+                        AnalysisAwareRule::class
+                    ),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             }
@@ -156,8 +156,8 @@ class PawfectPHPCommand extends Command
              */
             $ruleInstance = $this->container->get($ruleReflectionClass->getName());
             $symfonyStyle->writeln(
-                    'registering ' . $ruleReflectionClass->getName() . ' as a rule',
-                    OutputInterface::VERBOSITY_DEBUG
+                'registering ' . $ruleReflectionClass->getName() . ' as a rule',
+                OutputInterface::VERBOSITY_DEBUG
             );
 
             $symfonyStyle->writeln(sprintf('checking if %s is in the skipped rules array: %s', $ruleInstance->getName(), implode(',', $input->getOption('skip'))), OutputInterface::VERBOSITY_DEBUG);
@@ -190,15 +190,15 @@ class PawfectPHPCommand extends Command
                 $reflectionClass = $this->reflectionClassLoader->load($classFile);
             } catch (NoSupportedClassesFoundInFile $noSupportedClassesFoundInFile) {
                 $symfonyStyle->writeln(
-                        sprintf('[*] no supported classes found in %s: %s', $classFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] no supported classes found in %s: %s', $classFile->getPathname(), $noSupportedClassesFoundInFile->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             } catch (Throwable $exception) {
                 $symfonyStyle->writeln('<fg=red>[!] exception inspecting ' . $classFile->getPathname() . ', skipping</>');
                 $symfonyStyle->writeln(
-                        sprintf('[*] exception inspecting %s: %s', $classFile->getPathname(), $exception->getMessage()),
-                        OutputInterface::VERBOSITY_DEBUG
+                    sprintf('[*] exception inspecting %s: %s', $classFile->getPathname(), $exception->getMessage()),
+                    OutputInterface::VERBOSITY_DEBUG
                 );
                 continue;
             }
@@ -251,16 +251,16 @@ class PawfectPHPCommand extends Command
 
         $symfonyStyle->newLine();
         $symfonyStyle->writeln(sprintf(
-                "<fg=blue>Registered Rules: %s, Inspected Files: %s, Scanned Classes: %s, Applied Rules: %s, Passes: %s, Failures: %s, Exceptions: %s, Warnings: %s, Time: %s</>",
-                $analysis->getRegisteredRules(),
-                $analysis->getInspectedFiles(),
-                $analysis->getInspectedClasses(),
-                count(array_unique($appliedRuleNames)),
-                $analysis->getPassCount(),
-                $analysis->getFailCount(),
-                $analysis->getExceptionCount(),
-                $analysis->getWarnCount(),
-                sprintf('%02d:%02d:%02d', (int)($duration / 3600), ((int)($duration / 60) % 60), $duration % 60)
+            "<fg=blue>Registered Rules: %s, Inspected Files: %s, Scanned Classes: %s, Applied Rules: %s, Passes: %s, Failures: %s, Exceptions: %s, Warnings: %s, Time: %s</>",
+            $analysis->getRegisteredRules(),
+            $analysis->getInspectedFiles(),
+            $analysis->getInspectedClasses(),
+            count(array_unique($appliedRuleNames)),
+            $analysis->getPassCount(),
+            $analysis->getFailCount(),
+            $analysis->getExceptionCount(),
+            $analysis->getWarnCount(),
+            sprintf('%02d:%02d:%02d', (int)($duration / 3600), ((int)($duration / 60) % 60), $duration % 60)
         ));
 
         if ($analysis->getFailCount() > 0) {
