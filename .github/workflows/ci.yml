@@ -6,7 +6,7 @@ jobs:
       matrix:
         operating-system: [ ubuntu-latest ]
         php-versions: [ '8.0', '8.1', '8.2' ]
-        composer-range: [ '--prefer-stable', '' ]
+        composer-range: [ '--prefer-stable --prefer-lowest', '--prefer-stable', '' ]
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout
