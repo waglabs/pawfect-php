@@ -42,7 +42,7 @@ trait Methods
             return false;
         }
 
-        return $reflectionClass->getMethod($methodName)->isPublic();
+        return $reflectionClass->getMethod($methodName)?->isPublic();
     }
 
     /**
@@ -56,7 +56,7 @@ trait Methods
             return false;
         }
 
-        return $reflectionClass->getMethod($methodName)->isProtected();
+        return $reflectionClass->getMethod($methodName)?->isProtected();
     }
 
     /**
@@ -70,7 +70,7 @@ trait Methods
             return false;
         }
 
-        return $reflectionClass->getMethod($methodName)->isPrivate();
+        return $reflectionClass->getMethod($methodName)?->isPrivate();
     }
 
     /**
