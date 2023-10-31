@@ -6,7 +6,6 @@ jobs:
       matrix:
         operating-system: [ ubuntu-latest ]
         php-versions: [ '8.0', '8.1', '8.2' ]
-        composer-range: [ '--prefer-stable --prefer-lowest', '--prefer-stable', '' ]
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout
@@ -20,7 +19,7 @@ jobs:
           coverage: xdebug
           tools: pecl
       - name: Install composer dependencies
-        run: composer update --prefer-dist ${{ matrix.composer-range }}
+        run: composer install --prefer-dist
       - name: Run PHPStan
         run: php vendor/bin/phpstan analyse -c phpstan.neon
       - name: Run Psalm

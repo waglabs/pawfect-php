@@ -29,7 +29,6 @@ use Roave\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
-use RuntimeException;
 use SplFileInfo;
 use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 
@@ -68,19 +67,13 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
      */
     public function load(SplFileInfo $splFileInfo, bool $cache = true): ReflectionClass
     {
-        $pathname = $splFileInfo->getPathname();
-
-        if (empty($pathname)) {
-            throw new RuntimeException('provided SplFileInfo has an empty pathname');
-        }
-
-        if (array_key_exists(sha1($pathname), $this->fileClassCache)) {
-            return $this->fileClassCache[sha1($pathname)];
+        if (array_key_exists(sha1($splFileInfo->getPathname()), $this->fileClassCache)) {
+            return $this->fileClassCache[sha1($splFileInfo->getPathname())];
         }
 
         /** @var array<int, BetterReflectionClass> $classes */
         $classes = (new DefaultReflector(
-            new SingleFileSourceLocator($pathname, $this->astLocator)
+            new SingleFileSourceLocator($splFileInfo->getPathname(), $this->astLocator)
         ))->reflectAllClasses();
 
         $supportedClasses = [];
@@ -93,12 +86,12 @@ class ReflectionClassLoader implements ReflectionClassLoaderInterface
         $classes = $supportedClasses;
 
         if (count($classes) !== 1) {
-            throw new NoSupportedClassesFoundInFile('unable to load a single named class from ' . $pathname);
+            throw new NoSupportedClassesFoundInFile('unable to load a single named class from ' . $splFileInfo->getPathname());
         }
 
         $reflectionClass = $this->loadFromFqn($classes[0]->getName());
         if ($cache) {
-            $this->fileClassCache[sha1($pathname)] = $reflectionClass;
+            $this->fileClassCache[sha1($splFileInfo->getPathname())] = $reflectionClass;
         }
         return $reflectionClass;
     }
