@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.8",
-    "ergebnis/composer-normalize": "2.31.0",
+    "ergebnis/composer-normalize": "2.39.0",
     "friendsofphp/php-cs-fixer": "^3.0",
     "mockery/mockery": "^1.6.0",
     "phpstan/phpstan": "^1.8",
