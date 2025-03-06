@@ -23,7 +23,7 @@
     "symfony/console": "^4.4.49 || ^5.0 || ^6.0 || ^7.0"
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.8",
+    "brainmaestro/composer-git-hooks": "^2.8 || ^3.0",
     "ergebnis/composer-normalize": "^2.31",
     "friendsofphp/php-cs-fixer": "^3.0",
     "mockery/mockery": "^1.6.0",
