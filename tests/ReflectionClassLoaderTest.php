@@ -25,6 +25,7 @@ namespace WagLabs\PawfectPHP\Tests;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\BetterReflection;
+use RuntimeException;
 use SplFileInfo;
 use WagLabs\PawfectPHP\Exceptions\NoSupportedClassesFoundInFile;
 use WagLabs\PawfectPHP\ReflectionClass;
@@ -69,6 +70,17 @@ class ReflectionClassLoaderTest extends TestCase
         $splFileInfo = new SplFileInfo(__DIR__ . '/../examples/Source/anonymous_class.php');
 
         $this->expectException(NoSupportedClassesFoundInFile::class);
+        $reflectionClassLoader->load($splFileInfo);
+    }
+    
+    public function testLoadEmptyFilepath():void
+    {
+        $locator               = (new BetterReflection())->astLocator();
+        $reflectionClassLoader = new ReflectionClassLoader($locator);
+
+        $splFileInfo = new SplFileInfo('');
+
+        $this->expectException(RuntimeException::class);
         $reflectionClassLoader->load($splFileInfo);
     }
 

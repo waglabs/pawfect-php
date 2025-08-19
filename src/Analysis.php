@@ -91,8 +91,8 @@ class Analysis
     public function fail(
         ReflectionClass $reflectionClass,
         $rule,
-        string          $message = null,
-        int             $line = null
+        ?string          $message = null,
+        ?int             $line = null
     ): void {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->failures)) {
@@ -119,7 +119,7 @@ class Analysis
      * @param int|null                        $line
      * @return void
      */
-    public function warn(ReflectionClass $reflectionClass, $rule, string $message, int $line = null): void
+    public function warn(ReflectionClass $reflectionClass, $rule, string $message, ?int $line = null): void
     {
         $ruleClass = get_class($rule);
         if (!array_key_exists($reflectionClass->getName(), $this->warnings)) {

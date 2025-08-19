@@ -2,4 +2,6 @@ parameters:
     level: 8
     paths:
         - src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        - '#Trait WagLabs\\PawfectPHP\\Assertions\\.+ is used zero times and is not analysed.#'
