@@ -3,7 +3,6 @@
   "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
   "license": "AGPL-3.0-or-later",
   "type": "library",
-  "version": "3.2.0",
   "authors": [
     {
       "name": "Andrew Breksa",
