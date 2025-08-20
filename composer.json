@@ -15,22 +15,22 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.2",
     "ext-json": "*",
     "doctrine/annotations": "^1.14.3 || ^2.0.0",
     "league/container": "^4.2.0 || ^5.0.0",
     "roave/better-reflection": "^5.11.0 || ^6.0",
-    "symfony/console": "^4.4.49 || ^5.0 || ^6.0 || ^7.0"
+    "symfony/console": "^6.0 || ^7.0"
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.8",
     "ergebnis/composer-normalize": "^2.31",
     "friendsofphp/php-cs-fixer": "^3.0",
     "mockery/mockery": "^1.6.0",
     "phpstan/phpstan": "^1.8 || ^2.0.0",
     "phpunit/phpunit": "^9.6.0 || ^10.0.0",
     "roave/security-advisories": "dev-latest",
-    "vimeo/psalm": "^5.15.0 || ^6.0.0"
+    "vimeo/psalm": "^6.13.1",
+    "rector/rector": "^2.1"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -51,21 +51,10 @@
       "ergebnis/composer-normalize": true
     }
   },
-  "extra": {
-    "hooks": {
-      "post-merge": [
-        "cghooks update"
-      ],
-      "pre-commit": [
-        "composer phpstan",
-        "composer psalm",
-        "composer phpunit"
-      ]
-    }
-  },
   "scripts": {
     "all": [
       "composer phpunit",
+      "composer rector",
       "composer phpstan",
       "composer psalm"
     ],
@@ -73,6 +62,7 @@
     "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin",
     "phpstan": "php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G",
     "phpunit": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
-    "psalm": "php vendor/bin/psalm -c psalm.xml"
+    "psalm": "php vendor/bin/psalm -c psalm.xml",
+    "rector": "vendor/bin/rector --clear-cache"
   }
 }

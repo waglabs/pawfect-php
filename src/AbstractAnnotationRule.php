@@ -31,6 +31,7 @@ abstract class AbstractAnnotationRule extends AbstractRule
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function supports(ReflectionClass $reflectionClass): bool
     {
         return $this->matchesApplyRuleAnnotation($reflectionClass, $this->getName());

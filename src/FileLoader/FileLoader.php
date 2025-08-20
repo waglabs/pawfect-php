@@ -32,7 +32,7 @@ use SplFileInfo;
  * @package WagLabs\PawfectPHP\FileLoader
  * @author  Andrew Breksa <andrew.breksa@wagwalking.com>
  */
-class FileLoader implements FileLoaderInterface
+final class FileLoader implements FileLoaderInterface
 {
     /**
      * @param array<string> $sources
@@ -73,7 +73,7 @@ class FileLoader implements FileLoaderInterface
      */
     public function shouldYieldFile(SplFileInfo $file): bool
     {
-        if (strpos($file->getPathname(), '.php') === false) {
+        if (!str_contains($file->getPathname(), '.php')) {
             return false;
         }
 

@@ -41,7 +41,7 @@ class ReflectionClassTest extends TestCase
         parent::tearDown();
     }
 
-    public function test__call()
+    public function test__call(): void
     {
         $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
@@ -54,7 +54,7 @@ class ReflectionClassTest extends TestCase
         self::assertEquals(ReflectionClassTest::class, $reflectionClass->getName());
     }
 
-    public function testGetUses()
+    public function testGetUses(): void
     {
         $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
@@ -69,7 +69,7 @@ class ReflectionClassTest extends TestCase
         self::assertEquals([ReflectionClass::class], $reflectionClass->getUses());
     }
 
-    public function testGetSplFileInfo()
+    public function testGetSplFileInfo(): void
     {
         $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);
@@ -81,7 +81,7 @@ class ReflectionClassTest extends TestCase
         self::assertEquals($splFileInfo, $reflectionClass->getSplFileInfo());
     }
 
-    public function testGetReflectionClass()
+    public function testGetReflectionClass(): void
     {
         $splFileInfo           = Mockery::mock(SplFileInfo::class);
         $betterReflectionClass = Mockery::mock(BetterReflectionClass::class);

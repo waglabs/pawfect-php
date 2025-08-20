@@ -42,7 +42,7 @@ class RelationshipsTest extends TestCase
         parent::tearDown();
     }
 
-    public function testDependOnFalse()
+    public function testDependOnFalse(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('getUses')
@@ -75,7 +75,7 @@ class RelationshipsTest extends TestCase
         self::assertFalse($rule->dependsOn($reflectionClass, FileLoaderInterface::class));
     }
 
-    public function testDependsOnTrue()
+    public function testDependsOnTrue(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('getUses')

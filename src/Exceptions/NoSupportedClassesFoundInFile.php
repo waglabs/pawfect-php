@@ -12,6 +12,6 @@ use Exception;
  * @package WagLabs\PawfectPHP\Exceptions
  * @author  Andrew Breksa <andrew.breksa@wagwalking.com>
  */
-class NoSupportedClassesFoundInFile extends Exception
+final class NoSupportedClassesFoundInFile extends Exception
 {
 }

@@ -43,7 +43,7 @@ class HierarchyTest extends TestCase
         parent::tearDown();
     }
 
-    public function testExtendsFrom()
+    public function testExtendsFrom(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('isInterface')->andReturn(false)->once();
@@ -78,7 +78,7 @@ class HierarchyTest extends TestCase
         self::assertFalse($rule->extendsFrom($reflectionClass, RuleInterface::class));
     }
 
-    public function testExtendsFromInterface()
+    public function testExtendsFromInterface(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('isInterface')->andReturn(true)->once();
@@ -113,7 +113,7 @@ class HierarchyTest extends TestCase
         self::assertFalse($rule->extendsFrom($reflectionClass, RuleInterface::class));
     }
 
-    public function testImplements()
+    public function testImplements(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('implementsInterface')
@@ -146,7 +146,7 @@ class HierarchyTest extends TestCase
         self::assertTrue($rule->implements($reflectionClass, RuleInterface::class));
     }
 
-    public function testDoesNotImplement()
+    public function testDoesNotImplement(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('implementsInterface')

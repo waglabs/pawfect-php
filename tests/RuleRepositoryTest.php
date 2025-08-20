@@ -40,7 +40,7 @@ class RuleRepositoryTest extends TestCase
         parent::tearDown();
     }
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $rule           = Mockery::mock(RuleInterface::class);
         $ruleRepository = new RuleRepository();

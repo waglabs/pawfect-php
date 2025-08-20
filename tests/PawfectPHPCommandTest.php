@@ -53,7 +53,7 @@ class PawfectPHPCommandTest extends TestCase
         parent::tearDown();
     }
 
-    public function testNoRules()
+    public function testNoRules(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -85,7 +85,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testNoRulesWithRuleInterface()
+    public function testNoRulesWithRuleInterface(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -127,7 +127,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testExceptionLoadingRule()
+    public function testExceptionLoadingRule(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -166,7 +166,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testNoSupportedClassesFoundInFileWhileLoadingRuleFile()
+    public function testNoSupportedClassesFoundInFileWhileLoadingRuleFile(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -208,7 +208,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testNoClasses()
+    public function testNoClasses(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -260,7 +260,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testRuleSkipped()
+    public function testRuleSkipped(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -325,7 +325,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testNoRulesForClass()
+    public function testNoRulesForClass(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -387,7 +387,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testRulePassesTrueResponse()
+    public function testRulePassesTrueResponse(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -452,7 +452,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testRulePassesNullResponse()
+    public function testRulePassesNullResponse(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -517,7 +517,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testRuleFailsFalseResponse()
+    public function testRuleFailsFalseResponse(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -583,7 +583,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testRuleFailsAssertionException()
+    public function testRuleFailsAssertionException(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -650,7 +650,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testRuleFailsException()
+    public function testRuleFailsException(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -717,7 +717,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(1, $commandTester->getStatusCode());
     }
 
-    public function testRuleSupportsException()
+    public function testRuleSupportsException(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -782,7 +782,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testExceptionLoadingClass()
+    public function testExceptionLoadingClass(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -843,7 +843,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testNoSupportedClassesFoundInFileWhileLoadingClassFile()
+    public function testNoSupportedClassesFoundInFileWhileLoadingClassFile(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -907,7 +907,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testRuleFailsExceptionDryRun()
+    public function testRuleFailsExceptionDryRun(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);
@@ -974,7 +974,7 @@ class PawfectPHPCommandTest extends TestCase
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 
-    public function testAnalysisAwareRulePassesNullResponse()
+    public function testAnalysisAwareRulePassesNullResponse(): void
     {
         $fileLoader            = Mockery::mock(FileLoaderInterface::class);
         $ruleRegistry          = Mockery::mock(RuleRepositoryInterface::class);

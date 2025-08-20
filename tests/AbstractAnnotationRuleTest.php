@@ -34,7 +34,7 @@ class AbstractAnnotationRuleTest extends TestCase
     /** @var AbstractAnnotationRule */
     private $test;
 
-    public function testSupportsTrue()
+    public function testSupportsTrue(): void
     {
         $class = new ReflectionClass(
             new SplFileInfo('../examples/Source/AnnotatedClass.php'),
@@ -47,7 +47,7 @@ class AbstractAnnotationRuleTest extends TestCase
         self::assertTrue($this->test->supports($class));
     }
 
-    public function testSupportsFalse()
+    public function testSupportsFalse(): void
     {
         $class = new ReflectionClass(
             new SplFileInfo('../examples/Source/PlainClass.php'),

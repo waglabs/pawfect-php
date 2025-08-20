@@ -28,14 +28,14 @@ use WagLabs\PawfectPHP\Examples\Source\AnnotatedClass;
 
 class ApplyRuleTest extends TestCase
 {
-    public function test__construct()
+    public function test__construct(): void
     {
         $test = new ApplyRule([]);
         self::assertIsArray($test->names);
         self::assertNull($test->regex);
     }
 
-    public function test__constructFull()
+    public function test__constructFull(): void
     {
         $test = new ApplyRule([
             'value' => 'test-override',
@@ -50,26 +50,26 @@ class ApplyRuleTest extends TestCase
         self::assertIsString($test->regex);
     }
 
-    public function testMatchesAlways()
+    public function testMatchesAlways(): void
     {
         $test = new ApplyRule([]);
         self::assertTrue($test->matches(random_bytes(10)));
     }
 
-    public function testMatchesRegex()
+    public function testMatchesRegex(): void
     {
         $test = new ApplyRule(['regex' => '/.*/']);
         self::assertTrue($test->matches(random_bytes(10)));
     }
 
-    public function testMatchesExact()
+    public function testMatchesExact(): void
     {
         $name = random_bytes(10);
         $test = new ApplyRule(['value' => $name]);
         self::assertTrue($test->matches($name));
     }
 
-    public function testReading()
+    public function testReading(): void
     {
         // Expected annotations
         // @see \Wag\ApplyRule\Examples\Source\AnnotatedClass

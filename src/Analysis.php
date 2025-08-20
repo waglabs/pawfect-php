@@ -54,15 +54,12 @@ class Analysis
     protected $registeredRules = 0;
     /** @var int */
     protected $inspectedClasses = 0;
-    /** @var SymfonyStyle */
-    private SymfonyStyle $symfonyStyle;
 
     /**
      * @param SymfonyStyle $symfonyStyle
      */
-    public function __construct(SymfonyStyle $symfonyStyle)
+    public function __construct(private readonly SymfonyStyle $symfonyStyle)
     {
-        $this->symfonyStyle = $symfonyStyle;
     }
 
 
@@ -76,8 +73,8 @@ class Analysis
         if (!array_key_exists($reflectionClass->getName(), $this->passes)) {
             $this->passes[$reflectionClass->getName()] = [];
         }
-        $this->passes[$reflectionClass->getName()][] = get_class($rule);
-        $this->symfonyStyle->writeln('<fg=green>[✓] passed rule ' . get_class($rule) . '</>');
+        $this->passes[$reflectionClass->getName()][] = $rule::class;
+        $this->symfonyStyle->writeln('<fg=green>[✓] passed rule ' . $rule::class . '</>');
         $this->passCount++;
     }
 
@@ -94,7 +91,7 @@ class Analysis
         ?string          $message = null,
         ?int             $line = null
     ): void {
-        $ruleClass = get_class($rule);
+        $ruleClass = $rule::class;
         if (!array_key_exists($reflectionClass->getName(), $this->failures)) {
             $this->failures[$reflectionClass->getName()] = [];
         }
@@ -121,7 +118,7 @@ class Analysis
      */
     public function warn(ReflectionClass $reflectionClass, $rule, string $message, ?int $line = null): void
     {
-        $ruleClass = get_class($rule);
+        $ruleClass = $rule::class;
         if (!array_key_exists($reflectionClass->getName(), $this->warnings)) {
             $this->warnings[$reflectionClass->getName()] = [];
         }
@@ -147,7 +144,7 @@ class Analysis
      */
     public function exception(ReflectionClass $reflectionClass, $rule, Throwable $throwable): void
     {
-        $ruleClass = get_class($rule);
+        $ruleClass = $rule::class;
         if (!array_key_exists($reflectionClass->getName(), $this->exceptions)) {
             $this->exceptions[$reflectionClass->getName()] = [];
         }
@@ -181,7 +178,7 @@ class Analysis
                 '<fg=yellow>[*] %s (Class: %s, Rule: %s)',
                 $message,
                 ($reflectionClass !== null ? $reflectionClass->getName() : 'N/A'),
-                ($rule !== null ? get_class($rule) : 'N/A')
+                ($rule !== null ? $rule::class : 'N/A')
             ),
             OutputInterface::VERBOSITY_DEBUG
         );

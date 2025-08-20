@@ -40,14 +40,14 @@ class FileLoaderTest extends TestCase
         parent::tearDown();
     }
 
-    public function testShouldYieldFile()
+    public function testShouldYieldFile(): void
     {
         $fileLoader = new FileLoader();
         self::assertTrue($fileLoader->shouldYieldFile(new SplFileInfo(__FILE__)));
         self::assertFalse($fileLoader->shouldYieldFile(new SplFileInfo(__DIR__ . '/../composer.json')));
     }
 
-    public function testYieldFiles()
+    public function testYieldFiles(): void
     {
         $fileLoader = new FileLoader();
         $sources    = [
