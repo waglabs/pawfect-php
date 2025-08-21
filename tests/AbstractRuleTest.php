@@ -33,7 +33,7 @@ use WagLabs\PawfectPHP\ReflectionClass;
  */
 class AbstractRuleTest extends TestCase
 {
-    public function testAssert()
+    public function testAssert(): void
     {
         $class = new class () extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool
@@ -60,7 +60,7 @@ class AbstractRuleTest extends TestCase
         $class->assert(false, 'Test Message');
     }
 
-    public function testAssertPasses()
+    public function testAssertPasses(): void
     {
         $rule = new class () extends AbstractRule {
             public function supports(ReflectionClass $reflectionClass): bool

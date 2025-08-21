@@ -33,7 +33,7 @@ interface AnalysisAwareRule
      * @param Analysis|null   $analysis
      * @return void
      */
-    public function execute(ReflectionClass $reflectionClass, Analysis $analysis = null): void;
+    public function execute(ReflectionClass $reflectionClass, ?Analysis $analysis = null): void;
 
     /**
      * @param ReflectionClass $reflectionClass

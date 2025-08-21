@@ -212,7 +212,7 @@ class PawfectPHPCommand extends Command
                         continue;
                     }
                 } catch (Throwable $throwable) {
-                    $symfonyStyle->writeln('<fg=red>[!] exception checking if ' . $classFile->getPathname() . ' is supported by ' . get_class($rule) . ', skipping</>');
+                    $symfonyStyle->writeln('<fg=red>[!] exception checking if ' . $classFile->getPathname() . ' is supported by ' . $rule::class . ', skipping</>');
                     continue;
                 }
                 if (0 === $appliedRules++) {

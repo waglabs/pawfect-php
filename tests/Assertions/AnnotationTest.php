@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of waglabs/pawfect-php.
  *
@@ -52,37 +53,37 @@ class AnnotationTest extends TestCase
      */
     private $plainClass;
 
-    public function testHasAnnotation()
+    public function testHasAnnotation(): void
     {
         self::assertTrue($this->test->hasAnnotation($this->annotatedClass));
         self::assertFalse($this->test->hasAnnotation($this->annotatedClass, Attributes::class));
     }
 
-    public function testMatchesApplyRuleAnnotation()
+    public function testMatchesApplyRuleAnnotation(): void
     {
         self::assertTrue($this->test->matchesApplyRuleAnnotation($this->annotatedClass, 'any'));
         self::assertFalse($this->test->matchesApplyRuleAnnotation($this->plainClass, 'any'));
     }
 
-    public function testHasClassAnnotation()
+    public function testHasClassAnnotation(): void
     {
         self::assertTrue($this->test->hasClassAnnotation($this->annotatedClass));
         self::assertFalse($this->test->hasClassAnnotation($this->annotatedClass, Attributes::class));
     }
 
-    public function testHasPropertyAnnotation()
+    public function testHasPropertyAnnotation(): void
     {
         self::assertTrue($this->test->hasPropertyAnnotation($this->annotatedClass));
         self::assertFalse($this->test->hasPropertyAnnotation($this->annotatedClass, Attributes::class));
     }
 
-    public function testHasMethodAnnotation()
+    public function testHasMethodAnnotation(): void
     {
         self::assertTrue($this->test->hasMethodAnnotation($this->annotatedClass));
         self::assertFalse($this->test->hasMethodAnnotation($this->annotatedClass, Attributes::class));
     }
 
-    public function testPoorlyAnnotatedClass()
+    public function testPoorlyAnnotatedClass(): void
     {
         // While this class does have an annotation, it has more bad ones than the reader is willing to tolerate
         self::assertFalse($this->test->hasAnnotation(new ReflectionClass(

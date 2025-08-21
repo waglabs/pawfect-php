@@ -42,7 +42,7 @@ class MethodsTest extends TestCase
         parent::tearDown();
     }
 
-    public function testHasPublicMethodNoMethod()
+    public function testHasPublicMethodNoMethod(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -74,7 +74,7 @@ class MethodsTest extends TestCase
         self::assertFalse($rule->hasPublicMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasPublicMethodNotPublic()
+    public function testHasPublicMethodNotPublic(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -111,7 +111,7 @@ class MethodsTest extends TestCase
         self::assertFalse($rule->hasPublicMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasPublicMethodPublic()
+    public function testHasPublicMethodPublic(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -148,7 +148,7 @@ class MethodsTest extends TestCase
         self::assertTrue($rule->hasPublicMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasProtectedMethod()
+    public function testHasProtectedMethod(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -185,7 +185,7 @@ class MethodsTest extends TestCase
         self::assertTrue($rule->hasProtectedMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasPrivateMethod()
+    public function testHasPrivateMethod(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -222,7 +222,7 @@ class MethodsTest extends TestCase
         self::assertTrue($rule->hasPrivateMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasProtectedMethodNoMethod()
+    public function testHasProtectedMethodNoMethod(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')
@@ -254,7 +254,7 @@ class MethodsTest extends TestCase
         self::assertFalse($rule->hasProtectedMethod($reflectionClass, 'testMethod'));
     }
 
-    public function testHasPrivateMethodNoMethod()
+    public function testHasPrivateMethodNoMethod(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionClass->shouldReceive('hasMethod')

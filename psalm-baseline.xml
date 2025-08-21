@@ -1,42 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
   <file src="src/AbstractAnnotationRule.php">
     <DeprecatedInterface>
-      <code>AbstractAnnotationRule</code>
+      <code><![CDATA[AbstractAnnotationRule]]></code>
     </DeprecatedInterface>
   </file>
   <file src="src/AbstractRule.php">
     <DeprecatedInterface>
-      <code>AbstractRule</code>
+      <code><![CDATA[AbstractRule]]></code>
     </DeprecatedInterface>
   </file>
   <file src="src/Analysis.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Analysis]]></code>
+    </ClassMustBeFinal>
     <DeprecatedInterface>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule|null</code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule|null]]></code>
     </DeprecatedInterface>
+  </file>
+  <file src="src/FailedAssertionException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[FailedAssertionException]]></code>
+    </ClassMustBeFinal>
   </file>
   <file src="src/PawfectPHPCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[PawfectPHPCommand]]></code>
+    </ClassMustBeFinal>
     <DeprecatedInterface>
-      <code>$ruleInstance</code>
+      <code><![CDATA[$ruleInstance]]></code>
     </DeprecatedInterface>
   </file>
+  <file src="src/ReflectionClass.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ReflectionClass]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/ReflectionClassLoader.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ReflectionClassLoader]]></code>
+    </ClassMustBeFinal>
+  </file>
   <file src="src/RuleRepository.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RuleRepository]]></code>
+    </ClassMustBeFinal>
     <DeprecatedInterface>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule</code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
       <code><![CDATA[array<string, RuleInterface|AnalysisAwareRule>]]></code>
       <code><![CDATA[array<string, RuleInterface|AnalysisAwareRule>]]></code>
-      <code>protected $rules = [];</code>
+      <code><![CDATA[protected $rules = [];]]></code>
     </DeprecatedInterface>
   </file>
   <file src="src/RuleRepositoryInterface.php">
     <DeprecatedInterface>
-      <code>RuleInterface|AnalysisAwareRule</code>
-      <code>RuleInterface|AnalysisAwareRule</code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
+      <code><![CDATA[RuleInterface|AnalysisAwareRule]]></code>
       <code><![CDATA[array<RuleInterface|AnalysisAwareRule>]]></code>
     </DeprecatedInterface>
   </file>

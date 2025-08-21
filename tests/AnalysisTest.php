@@ -42,7 +42,7 @@ class AnalysisTest extends TestCase
         parent::tearDown();
     }
 
-    public function testWarning()
+    public function testWarning(): void
     {
         $class = Mockery::mock(ReflectionClass::class);
         $class->allows('getName')->andReturn('testClass');
@@ -57,10 +57,10 @@ class AnalysisTest extends TestCase
             'This is a message'
         );
 
-        self::assertEquals('This is a message', $analysis->getWarnings()['testClass'][get_class($rule)][0][0]);
+        self::assertEquals('This is a message', $analysis->getWarnings()['testClass'][$rule::class][0][0]);
     }
 
-    public function testGetPasses()
+    public function testGetPasses(): void
     {
         $class = Mockery::mock(ReflectionClass::class);
         $class->allows('getName')->andReturn('testClass');
@@ -73,6 +73,6 @@ class AnalysisTest extends TestCase
 
         $analysis->pass($class, $rule);
 
-        self::assertEquals(get_class($rule), $analysis->getPasses()['testClass'][0]);
+        self::assertEquals($rule::class, $analysis->getPasses()['testClass'][0]);
     }
 }
