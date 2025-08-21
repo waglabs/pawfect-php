@@ -1,67 +1,64 @@
 {
-  "name": "waglabs/pawfect-php",
-  "description": "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
-  "license": "AGPL-3.0-or-later",
-  "type": "library",
-  "authors": [
-    {
-      "name": "Andrew Breksa",
-      "email": "andrew.breksa@wagwalking.com"
-    },
-    {
-      "name": "Tyson Green",
-      "email": "tyson.green@wagwalking.com"
-    }
-  ],
-  "require": {
-    "php": "^8.2",
-    "ext-json": "*",
-    "doctrine/annotations": "^1.14.3 || ^2.0.0",
-    "league/container": "^4.2.0 || ^5.0.0",
-    "roave/better-reflection": "^5.11.0 || ^6.0",
-    "symfony/console": "^6.0 || ^7.0"
-  },
-  "require-dev": {
-    "ergebnis/composer-normalize": "^2.31",
-    "friendsofphp/php-cs-fixer": "^3.0",
-    "mockery/mockery": "^1.6.0",
-    "phpstan/phpstan": "^1.8 || ^2.0.0",
-    "phpunit/phpunit": "^9.6.0 || ^10.0.0",
-    "roave/security-advisories": "dev-latest",
-    "vimeo/psalm": "^6.13.1",
-    "rector/rector": "^2.1"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "psr-4": {
-      "WagLabs\\PawfectPHP\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "WagLabs\\PawfectPHP\\Examples\\": "./examples",
-      "WagLabs\\PawfectPHP\\Tests\\": "./tests"
-    }
-  },
-  "bin": "bin/pawfect-php",
-  "config": {
-    "allow-plugins": {
-      "ergebnis/composer-normalize": true
-    }
-  },
-  "scripts": {
-    "all": [
-      "composer phpunit",
-      "composer rector",
-      "composer phpstan",
-      "composer psalm"
+    "name":              "waglabs/pawfect-php",
+    "description":       "A simple and extensible framework for writing rules to ensure PHP code meets engineer-defined code and architecture standards",
+    "license":           "AGPL-3.0-or-later",
+    "type":              "library",
+    "authors":           [
+        {
+            "name":  "Andrew Breksa",
+            "email": "andrew.breksa@wagwalking.com"
+        },
+        {
+            "name":  "Tyson Green",
+            "email": "tyson.green@wagwalking.com"
+        }
     ],
-    "cghooks": "vendor/bin/cghooks",
-    "cs-fixer": "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin",
-    "phpstan": "php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G",
-    "phpunit": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
-    "psalm": "php vendor/bin/psalm -c psalm.xml",
-    "rector": "vendor/bin/rector --clear-cache"
-  }
+    "require":           {
+        "php":                     "^8.2",
+        "ext-json":                "*",
+        "doctrine/annotations":    "^1.14.3 || ^2.0.0",
+        "league/container":        "^4.2.0 || ^5.0.0",
+        "roave/better-reflection": "^5.11.0 || ^6.0",
+        "symfony/console":         "^6.0 || ^7.0"
+    },
+    "require-dev":       {
+        "ergebnis/composer-normalize": "^2.31",
+        "friendsofphp/php-cs-fixer":   "^3.0",
+        "mockery/mockery":             "^1.6.0",
+        "phpstan/phpstan":             "^1.8 || ^2.0.0",
+        "phpunit/phpunit":             "^9.6.0 || ^10.0.0",
+        "roave/security-advisories":   "dev-latest",
+        "vimeo/psalm":                 "^6.13.1",
+        "rector/rector":               "^2.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable":     true,
+    "autoload":          {
+        "psr-4": {
+            "WagLabs\\PawfectPHP\\": "src"
+        }
+    },
+    "autoload-dev":      {
+        "psr-4": {
+            "WagLabs\\PawfectPHP\\Examples\\": "./examples",
+            "WagLabs\\PawfectPHP\\Tests\\":    "./tests"
+        }
+    },
+    "bin":               "bin/pawfect-php",
+    "config":            {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    },
+    "scripts":           {
+        "test": "XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text",
+        "lint": [
+            "php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G",
+            "php vendor/bin/psalm -c psalm.xml"
+        ],
+        "fix":  [
+            "vendor/bin/rector --clear-cache",
+            "./vendor/bin/php-cs-fixer fix --ansi --config=.php-cs-fixer.php ./src ./tests ./examples ./bin"
+        ]
+    }
 }

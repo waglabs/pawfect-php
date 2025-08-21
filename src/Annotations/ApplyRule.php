@@ -52,7 +52,7 @@ final class ApplyRule
         foreach ($values as $key => $value) {
             $this->$key = $value;
         }
-        
+
     }
 
     /**
@@ -62,13 +62,13 @@ final class ApplyRule
      */
     public function matches(string $test): bool
     {
-        $regex = ($this->regex??'');
+        $regex = ($this->regex ?? '');
 
-        if(empty($regex)) {
+        if (empty($regex)) {
             return true;
         }
 
-        if(count($this->names) > 0) {
+        if (count($this->names) > 0) {
             return in_array($test, $this->names);
         }
 

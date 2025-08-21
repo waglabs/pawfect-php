@@ -72,8 +72,8 @@ class ReflectionClassLoaderTest extends TestCase
         $this->expectException(NoSupportedClassesFoundInFile::class);
         $reflectionClassLoader->load($splFileInfo);
     }
-    
-    public function testLoadEmptyFilepath():void
+
+    public function testLoadEmptyFilepath(): void
     {
         $locator               = (new BetterReflection())->astLocator();
         $reflectionClassLoader = new ReflectionClassLoader($locator);

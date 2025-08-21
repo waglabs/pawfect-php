@@ -73,7 +73,7 @@ trait Annotation
         /** @var class-string $className */
         $className           = $reflectionClass->getName();
         $coreReflectionClass = new \ReflectionClass($className);
-        $annotations         = $this->protectFromUnknownAnnotations(fn() => $this->getAnnotationReader()->getClassAnnotations($coreReflectionClass));
+        $annotations         = $this->protectFromUnknownAnnotations(fn () => $this->getAnnotationReader()->getClassAnnotations($coreReflectionClass));
 
         return $this->filterAnnotations($annotations, $annotationName);
     }
@@ -125,7 +125,7 @@ trait Annotation
     {
         return is_null($annotationName)
             ? $annotations
-            : array_filter($annotations, fn($annotation): bool => $annotation instanceof $annotationName);
+            : array_filter($annotations, fn ($annotation): bool => $annotation instanceof $annotationName);
     }
 
     /**
@@ -159,7 +159,7 @@ trait Annotation
         ?string $annotationName = null
     ): array {
         $coreReflectionProperty = new ReflectionProperty($reflectionClass->getName(), $propertyName);
-        $annotations            = $this->protectFromUnknownAnnotations(fn() => $this->getAnnotationReader()->getPropertyAnnotations($coreReflectionProperty));
+        $annotations            = $this->protectFromUnknownAnnotations(fn () => $this->getAnnotationReader()->getPropertyAnnotations($coreReflectionProperty));
 
         return $this->filterAnnotations($annotations, $annotationName);
     }
@@ -195,7 +195,7 @@ trait Annotation
         ?string $annotationName = null
     ): array {
         $coreReflectionMethod = new ReflectionMethod($reflectionClass->getName(), $methodName);
-        $annotations          = $this->protectFromUnknownAnnotations(fn() => $this->getAnnotationReader()->getMethodAnnotations($coreReflectionMethod));
+        $annotations          = $this->protectFromUnknownAnnotations(fn () => $this->getAnnotationReader()->getMethodAnnotations($coreReflectionMethod));
 
         return $this->filterAnnotations($annotations, $annotationName);
     }
