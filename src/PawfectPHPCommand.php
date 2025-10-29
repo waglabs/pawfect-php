@@ -326,4 +326,9 @@ class PawfectPHPCommand extends Command
 
         return 0;
     }
+
+    public static function getDefaultName(): ?string
+    {
+        return static::$defaultName;
+    }
 }
