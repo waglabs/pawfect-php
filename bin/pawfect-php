@@ -65,12 +65,18 @@ $ruleRepository = new RuleRepository();
 $container->addShared(ReflectionClassLoaderInterface::class, $reflectionClassLoader);
 $container->addShared(RuleRepositoryInterface::class, $ruleRepository);
 
-$application->add(new PawfectPHPCommand(
+$command = new PawfectPHPCommand(
         new FileLoader(),
         $ruleRepository,
         $reflectionClassLoader,
         $container
-));
+);
+
+if (method_exists($application, 'addCommand')) {
+    $application->addCommand($command);
+} else {
+    $application->add($command);
+}
 
 if (method_exists(AnnotationRegistry::class, 'registerLoader')) {
     AnnotationRegistry::registerLoader(function ($className) use ($reflectionClassLoader) {
