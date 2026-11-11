@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace WagLabs\PawfectPHP;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,12 +39,9 @@ use WagLabs\PawfectPHP\FileLoader\FileLoaderInterface;
  * @package WagLabs\PawfectPHP
  * @author  Andrew Breksa <andrew.breksa@wagwalking.com>
  */
+#[AsCommand(name: 'scan')]
 class PawfectPHPCommand extends Command
 {
-    /**
-     * @var string|null
-     */
-    protected static $defaultName = 'scan';
     /**
      * @var FileLoaderInterface
      */
@@ -325,10 +323,5 @@ class PawfectPHPCommand extends Command
         $symfonyStyle->success('all rules pass');
 
         return 0;
-    }
-
-    public static function getDefaultName(): ?string
-    {
-        return static::$defaultName;
     }
 }
